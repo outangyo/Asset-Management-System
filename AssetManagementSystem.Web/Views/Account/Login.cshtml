@@ -1,6 +1,5 @@
 ﻿@model LoginViewModel
 
-
 <h1>Log in</h1>
 <hr />
 <div class="row">
@@ -9,19 +8,19 @@
             <form id="account" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" />
                     <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Password" class="form-control" />
                     <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe" class="form-label ms-2">
-                            <input class="form-check-input" asp-for="RememberMe" />
+                    <div class="form-check">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        <label class="form-check-label" asp-for="RememberMe">
                             @Html.DisplayNameFor(m => m.RememberMe)
                         </label>
                     </div>

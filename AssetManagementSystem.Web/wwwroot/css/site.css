@@ -20,3 +20,28 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Override AdminLTE form styles for better checkbox spacing */
+.checkbox {
+  margin-left: 0;
+}
+
+.checkbox label {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.checkbox .form-check-input {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+ Ensure proper spacing for form elements 
+.form-floating {
+  margin-bottom: 1rem;
+}
+
+ Override any AdminLTE conflicting styles 
+.form-label {
+  margin-bottom: 0.5rem;
+}

@@ -9,9 +9,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString,
-        b => b.MigrationsAssembly("AssetManagementSystem.Db")));
+        b => b.MigrationsAssembly("AssetManagementSystem.Db"))); // ตรงนี้คือส่วนที่ทำให้โปรเเกรมรู้ว่าจะต้องไปสร้างไฟล migration ไว้ที่ .Db
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter(); 
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();

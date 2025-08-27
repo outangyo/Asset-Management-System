@@ -1,4 +1,5 @@
-﻿using AssetManagementSystem.Web.Models; // เพิ่ม using
+﻿using AssetManagementSystem.Db.Entities;
+using AssetManagementSystem.Web.Models; // เพิ่ม using
 using Microsoft.AspNetCore.Identity;    // เพิ่ม using
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,10 +7,10 @@ namespace AssetManagementSystem.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;

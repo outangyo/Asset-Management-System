@@ -4,11 +4,11 @@ namespace AssetManagementSystem.Web.Models
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Email Id is Required")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password Id is Required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

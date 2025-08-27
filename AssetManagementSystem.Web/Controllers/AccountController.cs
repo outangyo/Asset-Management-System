@@ -9,21 +9,18 @@ namespace AssetManagementSystem.Web.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
-        // Inject service ที่จำเป็นเข้ามา
         public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
         }
 
-        // Action สำหรับแสดงหน้า Login (GET)
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // Action สำหรับรับข้อมูลจากฟอร์ม Login (POST)
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

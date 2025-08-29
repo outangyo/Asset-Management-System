@@ -17,7 +17,14 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // <-- 1. เปลี่ยนเป็น AddIdentity เพื่อใช้ ApplicationUser และ ApplicationRole
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+
+// Set token valid for 30 minutes
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(30);
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAccountService, AccountService>();

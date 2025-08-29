@@ -122,6 +122,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item @IsMenuOpen("Home")">
+                            <a asp-controller="account" asp-action="profile" class="nav-link @IsLinkActive("account", "profile")">
+                                <i class="nav-icon fas fa-address-card"></i>
+                                <p>
+                                    Profile
+                                </p>
+                            </a>
+                        </li>
                        @*  <li class="nav-item @IsMenuOpen("Employees")">
                             <a class="nav-link @IsLinkActive("Employees", "Index")" asp-controller="Asset" asp-action="Index">
                                 <i class="nav-icon fas fa-th"></i>

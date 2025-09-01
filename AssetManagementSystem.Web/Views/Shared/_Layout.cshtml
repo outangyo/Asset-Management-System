@@ -77,10 +77,10 @@
             </ul>
 
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
+            @* <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-none d-sm-inline-block">
                     <a class="nav-link" asp-controller="Account" asp-action="Login">
-                         Login
+                        Login
                     </a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
@@ -88,6 +88,39 @@
                         Register
                     </a>
                 </li>
+            </ul> *@
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <!-- This is for LOGGED-IN users -->
+                    <li class="nav-item">
+                        <span class="navbar-text">
+                            Hello, @User.Identity.Name!
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Logout Button -->
+                        <form method="post" asp-controller="Account" asp-action="Logout" class="form-inline">
+                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <!-- This is for LOGGED-OUT users -->
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">
+                            Register
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -102,19 +135,24 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
-                    <div class="image">
-                        <img src="~/AdminLTE/dist/img/avatar2.png" class="img-circle elevation-2" alt="User Image">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+                        <div class="image">
+                            <img src="~/AdminLTE/dist/img/avatar2.png" class="img-circle elevation-2" alt="User Image">
+                        </div>
+                        <div class="info">
+                            <a asp-controller="account" asp-action="profile" class="d-block">@User.Identity.Name</a>
+                        </div>
                     </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Mo Pongkorn</a>
-                    </div>
-                </div>
-
+                }
+                
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item @IsMenuOpen("Home")">
+
+                        <!-- Dashboard Menu -->
+                        <li class="nav-item @IsMenuOpen("home")">
                             <a asp-controller="home" asp-action="index" class="nav-link @IsLinkActive("Home", "Index")">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
@@ -122,7 +160,9 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item @IsMenuOpen("Home")">
+
+                        <!-- Profile Menu -->
+                        <li class="nav-item @IsMenuOpen("account")">
                             <a asp-controller="account" asp-action="profile" class="nav-link @IsLinkActive("account", "profile")">
                                 <i class="nav-icon fas fa-address-card"></i>
                                 <p>
@@ -130,8 +170,9 @@
                                 </p>
                             </a>
                         </li>
-                        
-                        <!-- System Adminstration Menu -->
+                        <li class="nav-header">Access</li>
+
+                        <!-- Asset Menu -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
@@ -168,7 +209,8 @@
                             </ul>
                         </li>
 
-                         <li class="nav-item">
+                        <!-- Adminstration Menu -->
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-user-shield"></i>
                                 <p>
@@ -184,6 +226,22 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <!-- Non Secure Page Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link @IsLinkActive("Home", "NonSecureMethod")" asp-controller="Home" asp-action="NonSecureMethod">
+                                <i class="nav-icon fas fa-unlock"></i>
+                                <p>Non-Secure Page</p>
+                            </a>
+                        </li>
+
+                        <!-- Secure Page Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link @IsLinkActive("Home", "SecureMethod")" asp-controller="Home" asp-action="SecureMethod">
+                                <i class="nav-icon fas fa-lock"></i>
+                                <p>Secure Page</p>
+                            </a>
                         </li>
                     </ul>
                 </nav>

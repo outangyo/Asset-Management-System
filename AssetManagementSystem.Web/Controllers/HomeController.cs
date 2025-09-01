@@ -1,4 +1,5 @@
 using AssetManagementSystem.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -27,6 +28,18 @@ namespace AssetManagementSystem.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [AllowAnonymous]
+        public IActionResult NonSecureMethod()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult SecureMethod()
+        {
+            return View();
         }
     }
 }

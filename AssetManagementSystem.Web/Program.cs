@@ -15,10 +15,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// <-- 1. เปลี่ยนเป็น AddIdentity เพื่อใช้ ApplicationUser และ ApplicationRole
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
+// เปลี่ยนเป็น AddIdentity เพื่อใช้ ApplicationUser และ ApplicationRole
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+{
+    // Password settings
+    options.Password.RequireDigit = true;               // Must include digits
+    options.Password.RequiredLength = 8;                // Minimum length 8
+    options.Password.RequireNonAlphanumeric = true;     // Must include special characters
+    options.Password.RequireUppercase = true;           // Must include uppercase letters
+    options.Password.RequireLowercase = true;           // Must include lowercase letters
+    options.Password.RequiredUniqueChars = 4;           // At least 4 unique characters
+})
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Set token valid for 30 minutes
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>

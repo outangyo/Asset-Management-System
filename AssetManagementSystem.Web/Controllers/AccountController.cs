@@ -198,27 +198,5 @@ namespace AssetManagementSystem.Web.Controllers
                 return View(model);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        public IActionResult AddPermission()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult AddPermission(string d)
-        {
-            return View();
-        }
     }
 }

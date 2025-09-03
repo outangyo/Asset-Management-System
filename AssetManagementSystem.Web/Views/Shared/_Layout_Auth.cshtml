@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="~/css/site.css">
 
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+
     <style>
         body {
             margin-top: 120px;
@@ -28,6 +32,11 @@
             </section>
         </div>
     </div>
+
+    <!-- 1. jQuery (ต้องมาก่อนเสมอ) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- 2. Bootstrap (ถ้าหน้า Auth ของคุณใช้) -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

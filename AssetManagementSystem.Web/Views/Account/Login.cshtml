@@ -39,6 +39,7 @@
             }
 
             <form asp-action="Login" method="post" novalidate>
+                <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label fw-semibold text-primary"></label>
                     <input asp-for="Email" class="form-control" placeholder="Enter your Email Address" autocomplete="username" />

@@ -89,8 +89,9 @@ namespace AssetManagementSystem.Web.Controllers
 
         // GET: /Account/Login
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? ReturnUrl = null)
         {
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
 
@@ -108,10 +109,12 @@ namespace AssetManagementSystem.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    // Redirect back to original page if ReturnUrl exists and is local
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
 
-                    return RedirectToAction("index", "home"); ;
+                    // Otherwise, redirect to a default page (like user profile)
+                    return RedirectToAction("profile", "account"); ;
                 }
 
                 if (result.IsNotAllowed)

@@ -29,6 +29,13 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// ปรับแต่งพฤติกรรมของคุกกี้ (วางโค้ดของคุณตรงนี้)
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // กำหนดให้หน้า Login เริ่มต้นคือ Controller 'Account' และ Action 'Login'
+    options.LoginPath = "/Account/Login";
+});
+
 // Set token valid for 30 minutes
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {

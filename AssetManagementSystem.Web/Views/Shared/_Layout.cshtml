@@ -239,6 +239,14 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-controller="users" asp-action="index" class="nav-link @IsLinkActive("Users", "Index")">
+                                        <i class="fas fa-users-cog nav-icon"></i>
+                                        <p>Users Management</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <!-- Non Secure Page Menu -->
@@ -274,6 +282,7 @@
             </section>
             <!-- /.content -->
         </div>
+
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>Copyright &copy; @DateTime.Now.Year <a href="">Designed and Developed By Mo Code</a>.</strong>

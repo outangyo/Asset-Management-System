@@ -31,15 +31,29 @@ body {
 
 /* Remove underline from brand link */
 .brand-link {
-    text-decoration: none ;
+    text-decoration: none;
 }
 
 /* Remove underline from user profile link */
 .user-panel .info a {
-    text-decoration: none ;
+    text-decoration: none;
 }
 
 /* For action buttons appear in one line */
 .actions-no-wrap {
     white-space: nowrap;
+}
+
+/* For sidebar text to stay on a single line, always */
+.sidebar .nav-link p,
+.main-sidebar .brand-text,
+.sidebar .user-panel .info {
+    white-space: nowrap;
+}
+
+/* When the sidebar is collapsing or opening, hide the text to prevent wrapping */
+.sidebar-collapsing .nav-link p,
+.sidebar-collapsing .brand-text,
+.sidebar-collapsing .user-panel .info {
+    opacity: 0;
 }

@@ -159,13 +159,13 @@ namespace AssetManagementSystem.Web.Controllers
             try
             {
                 await _accountService.LogoutUserAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("login", "account");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during logout");
                 // Optionally redirect to error page or home with message
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("login", "account");
             }
         }
 

@@ -213,25 +213,26 @@
                         </li>
 
                         <!-- Adminstration Menu -->
-                        <li class="nav-item @IsMenuOpen("Roles")">
-                            <a href="#" class="nav-link @IsControllerActive("Roles")">
+                        <li class="nav-item @IsMenuOpen("Roles") @IsMenuOpen("Users")">
+                            <!-- เพิ่ม IsMenuOpen("Users") -->
+                            <a href="#" class="nav-link @IsControllerActive("Roles") @IsControllerActive("Users")">
+                                <!-- เพิ่ม IsControllerActive("Users") -->
                                 <i class="nav-icon fa fa-user-shield"></i>
                                 <p>
                                     Administration
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="roles" asp-action="index" class="nav-link @IsLinkActive("Roles", "Index")">
+                                    <a asp-controller="Roles" asp-action="Index" class="nav-link @IsLinkActive("Roles", "Index")">
                                         <i class="fas fa-user-tag nav-icon"></i>
                                         <p>Roles Management</p>
                                     </a>
                                 </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="users" asp-action="index" class="nav-link @IsLinkActive("Users", "Index")">
+                                    <a asp-controller="Users" asp-action="Index" class="nav-link @IsLinkActive("Users", "Index")">
                                         <i class="fas fa-users-cog nav-icon"></i>
                                         <p>Users Management</p>
                                     </a>

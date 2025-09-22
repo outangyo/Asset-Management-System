@@ -21,3 +21,20 @@ body {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+/* Brand logo styling*/
+.brand-image-custom {
+    width: 33px !important;
+    height: 33px !important;
+    object-fit: cover !important;
+}
+
+/* Remove underline from brand link */
+.brand-link {
+    text-decoration: none ;
+}
+
+/* Remove underline from user profile link */
+.user-panel .info a {
+    text-decoration: none ;
+}

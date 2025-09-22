@@ -102,7 +102,11 @@
                     <li class="nav-item">
                         <!-- Logout Button -->
                         <form method="post" asp-controller="Account" asp-action="Logout" class="form-inline">
-                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            <button type="button" class="nav-link btn btn-link text-dark"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmLogoutModal">
+                                Logout
+                            </button>
                         </form>
                     </li>
                 }
@@ -138,7 +142,7 @@
                 {
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
                         <div class="image">
-                            <img src="~/AdminLTE/dist/img/avatar2.png" class="img-circle elevation-2" alt="User Image">
+                            <img src="~/AdminLTE/dist/img/avatar4.png" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
                             <a asp-controller="account" asp-action="profile" class="d-block">@User.Identity.Name</a>
@@ -271,7 +275,7 @@
 
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <strong>Copyright &copy; @DateTime.Now.Year <a href="">Designed and Developed By Mo Code</a>.</strong>
+            <strong>Copyright &copy; @DateTime.Now.Year <a href="">Designed and Developed By MoCode</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 @* <b>Version</b> 3.2.0 *@
@@ -285,6 +289,30 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="confirmLogoutModal" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmLogoutLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to log out?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <!-- This form will be submitted when the user confirms -->
+                    <form id="logoutForm" method="post" asp-controller="Account" asp-action="Logout">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -352,7 +380,6 @@
             });
         });
     </script>
-
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

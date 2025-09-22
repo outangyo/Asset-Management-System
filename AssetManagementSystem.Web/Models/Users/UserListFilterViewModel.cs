@@ -16,6 +16,6 @@ namespace AssetManagementSystem.Web.Models.Users
         public int PageNumber { get; set; } = 1; // Default page number
         [Display(Name = "Page Size")]
         [Range(1, 100, ErrorMessage = "Page size must be between 1 and 100.")]
-        public int PageSize { get; set; } = 5; // Default page size
+        public int PageSize { get; set; } = 10; // Default page size
     }
 }

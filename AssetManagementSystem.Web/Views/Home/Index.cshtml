@@ -1,4 +1,5 @@
-﻿
+﻿@model UserIndexViewModel
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,4 +7,64 @@
 <div class="text-center">
     <h1 class="display-4">Welcome to Asset Management System</h1>
     <p>Your solution for managing company assets efficiently.</p>
+</div>
+
+<div class="card shadow border-0 rounded">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <!-- Black/Dark header -->
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Email Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.PagedUsers.Items.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">No users found.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var u in Model.PagedUsers.Items)
+                        {
+                            <tr>
+                                <td>@($"{u.FirstName} {u.LastName}".Trim())</td>
+                                <td>@u.Email</td>
+                                <td>@u.PhoneNumber</td>
+                                <!-- Active / Inactive with colors -->
+                                <td>
+                                    @if (u.IsActive)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-danger">Inactive</span>
+                                    }
+                                </td>
+                                <!-- Email Confirmed / Unconfirmed with colors -->
+                                <td>
+                                    @if (u.EmailConfirmed)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-warning text-dark">Unconfirmed</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

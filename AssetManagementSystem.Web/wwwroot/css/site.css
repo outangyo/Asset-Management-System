@@ -38,3 +38,8 @@ body {
 .user-panel .info a {
     text-decoration: none ;
 }
+
+/* For action buttons appear in one line */
+.actions-no-wrap {
+    white-space: nowrap;
+}

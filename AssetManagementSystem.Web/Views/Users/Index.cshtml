@@ -88,7 +88,7 @@
                             <th>Status</th>
                             <th>Email Status</th>
                             <th>Created</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-center actions-no-wrap">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,7 +129,7 @@
                                         }
                                     </td>
                                     <td>@u.CreatedOn?.ToString("yyyy-MM-dd")</td>
-                                    <td class="text-end">
+                                    <td class="text-end actions-no-wrap">
                                         <a asp-action="Details" asp-route-id="@u.Id" class="btn btn-sm btn-outline-info">Details</a>
                                         <a asp-action="Edit" asp-route-id="@u.Id" class="btn btn-sm btn-outline-primary">Edit</a>
                                         <a asp-action="ManageRoles" asp-route-id="@u.Id" class="btn btn-sm btn-outline-dark">Manage Roles</a>

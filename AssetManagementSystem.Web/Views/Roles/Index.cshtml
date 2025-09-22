@@ -72,6 +72,7 @@
             </a>
         </div>
     </form>
+
     <!-- Table / Empty state -->
     @if (Model.Items.Any())
     {
@@ -85,7 +86,7 @@
                                 <th style="width: 43%;">Description</th>
                                 <th style="width: 12%;">Status</th>
                                 <th style="width: 10%;">Created</th>
-                                <th class="text-end" style="width: 15%;">Actions</th>
+                                <th class="text-center actions-no-wrap" style="width: 15%;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,11 +110,9 @@
                                         }
                                     </td>
                                     <td>@(r.CreatedOn?.ToString("yyyy-MM-dd") ?? "-")</td>
-                                    <td class="text-end">
-                                        <a asp-action="Details" asp-route-id="@r.Id"
-                                           class="btn btn-sm btn-outline-info me-2">View</a>
-                                        <a asp-action="Edit" asp-route-id="@r.Id"
-                                           class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                                    <td class="text-end actions-no-wrap">
+                                        <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-info me-2">View</a>
+                                        <a asp-action="Edit" asp-route-id="@r.Id" class="btn btn-sm btn-outline-primary me-2">Edit</a>
                                         <button class="btn btn-sm btn-outline-danger"
                                                 type="button"
                                                 data-bs-toggle="modal"
@@ -147,6 +146,7 @@
         </div>
     }
 </div>
+
 <!-- Delete Confirmation Modal (centered) -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

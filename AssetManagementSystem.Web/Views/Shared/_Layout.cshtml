@@ -96,7 +96,7 @@
                     <!-- This is for LOGGED-IN users -->
                     <li class="nav-item">
                         <span class="navbar-text">
-                            Hello, @User.Identity.Name!
+                            Hello, @User.FindFirstValue(ClaimTypes.GivenName)
                         </span>
                     </li>
                     <li class="nav-item">
@@ -145,7 +145,7 @@
                             <img src="~/AdminLTE/dist/img/avatar4.png" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a asp-controller="account" asp-action="profile" class="d-block">@User.Identity.Name</a>
+                            <a asp-controller="account" asp-action="profile" class="d-block">@($"{User.FindFirstValue(ClaimTypes.GivenName)} {User.FindFirstValue(ClaimTypes.Surname)}")</a>
                         </div>
                     </div>
                 }

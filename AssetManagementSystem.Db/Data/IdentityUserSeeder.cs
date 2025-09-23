@@ -46,7 +46,7 @@ namespace AssetManagementSystem.Db.Data
             {
                 foreach (var (firstName, lastName, phone, dob) in RoleUsers[role])
                 {
-                    var email = $"{firstName.ToLower()}.{lastName.ToLower()}@dotnettutorials.net";
+                    var email = $"{firstName.ToLower()}.{lastName.ToLower()}@hotmail.com";
                     await EnsureUserInRoleAsync(userManager, firstName, lastName, email, phone, dob, role, DefaultPassword);
                 }
             }

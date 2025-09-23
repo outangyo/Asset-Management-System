@@ -114,7 +114,7 @@ namespace AssetManagementSystem.Web.Controllers
                         return Redirect(returnUrl);
 
                     // Otherwise, redirect to a default page (like user profile)
-                    return RedirectToAction("profile", "account"); ;
+                    return RedirectToAction("index", "home"); ;
                 }
 
                 if (result.IsNotAllowed)

@@ -38,7 +38,7 @@
                 </div>
             }
 
-            <form asp-action="Login" method="post" novalidate>
+            <form id="account" asp-action="Login" method="post" novalidate>
                 <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label fw-semibold text-primary"></label>
@@ -94,4 +94,52 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // It prevents someone from just opening localStorage and seeing the password.
+        function simpleCipher(str, key) {
+            let result = '';
+            for (let i = 0; i < str.length; i++) {
+                result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return result;
+        }
+
+        const secretKey = "flint-scout-behemoth-warden-invoker-sillouhte"; // IMPORTANT: Change this to a random long string
+
+        $(document).ready(function () {
+            // --- 1. On Page Load: Check for saved credentials ---
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            const rememberedPass = localStorage.getItem('rememberedPass');
+
+            if (rememberedEmail && rememberedPass) {
+                // Decrypt the password before displaying
+                const decryptedPass = simpleCipher(rememberedPass, secretKey);
+
+                $("#Email").val(rememberedEmail);
+                $("#Password").val(decryptedPass); // <-- This will show as '*****' due to input type="password"
+                $("#RememberMe").prop('checked', true);
+            }
+
+            // --- 2. On Form Submit: Save credentials if "Remember Me" is checked ---
+            $("#account").submit(function () {
+
+                if ($("#RememberMe").is(":checked")) {
+                    const email = $("#Email").val();
+                    const password = $("#Password").val();
+
+                    // Encrypt the password before saving
+                    const encryptedPass = simpleCipher(password, secretKey);
+
+                    localStorage.setItem('rememberedEmail', email);
+                    localStorage.setItem('rememberedPass', encryptedPass);
+                } else {
+                    
+                    // If not checked, clear the saved credentials
+                    localStorage.removeItem('rememberedEmail');
+                    localStorage.removeItem('rememberedPass');
+                }
+            });
+        });
+    </script>
 }

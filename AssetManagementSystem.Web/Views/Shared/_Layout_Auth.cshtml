@@ -33,10 +33,14 @@
         </div>
     </div>
 
-    <!-- 1. jQuery (ต้องมาก่อนเสมอ) -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <!-- 2. Bootstrap (ถ้าหน้า Auth ของคุณใช้) -->
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery (Core - MUST be first for your script to work) -->
+    <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap 4 (Optional but good for consistency) -->
+    <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE App (Optional for login page) -->
+    <script src="~/AdminLTE/dist/js/adminlte.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

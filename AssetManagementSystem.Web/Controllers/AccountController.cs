@@ -1,5 +1,7 @@
-﻿using AssetManagementSystem.Web.Services;
+﻿using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.Models;
+using AssetManagementSystem.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,11 +12,13 @@ namespace AssetManagementSystem.Web.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ILogger<AccountController> _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(IAccountService accountService, ILogger<AccountController> logger)
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger, SignInManager<ApplicationUser> signInManager)
         {
             _accountService = accountService;
             _logger = logger;
+            _signInManager = signInManager;
         }
 
         // GET: /Account/Register
@@ -89,10 +93,31 @@ namespace AssetManagementSystem.Web.Controllers
 
         // GET: /Account/Login
         [HttpGet]
-        public IActionResult Login(string? ReturnUrl = null)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string? returnUrl = null)
         {
-            ViewData["ReturnUrl"] = ReturnUrl;
-            return View();
+            // สร้าง ViewModel เปล่าๆ ขึ้นมาก่อน
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
+            // ตรวจสอบว่ามี User ที่ล็อกอินค้างอยู่หรือไม่ (จากคุกกี้ Remember Me)
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            // ถ้าหาเจอ User ที่เคยล็อกอินค้างไว้
+            if (info?.Principal != null)
+            {
+                // ดึง Email จาก "บัตรประจำตัวดิจิทัล" (ClaimsPrincipal)
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (email != null)
+                {
+                    // นำ Email ที่ได้ไปใส่ใน Model เพื่อส่งกลับไปที่ View
+                    model.Email = email;
+                }
+            }
+            return View(model);
         }
 
         // POST: /Account/Login
@@ -110,11 +135,12 @@ namespace AssetManagementSystem.Web.Controllers
                 if (result.Succeeded)
                 {
                     // Redirect back to original page if ReturnUrl exists and is local
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
 
-                    // Otherwise, redirect to a default page (like user profile)
-                    return RedirectToAction("index", "home"); ;
+                    return RedirectToAction("index", "home");
                 }
 
                 if (result.IsNotAllowed)

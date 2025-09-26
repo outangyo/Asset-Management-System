@@ -224,5 +224,71 @@ namespace AssetManagementSystem.Web.Controllers
                 return View(model);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ExternalLogin(string provider, string? returnUrl = null)
+        {
+            // Generate the callback URL for to redirect after login
+            // This URL includes the returnUrl as a route parameter, which will be used to redirect the user
+            // back to the original page they were trying to access after a successful external login.
+            var redirectUrl = Url.Action(
+                action: "ExternalLoginCallback", // The name of the callback action method.
+                controller: "Account",           // The name of the controller containing the callback method.
+                values: new { ReturnUrl = returnUrl } // Pass the returnUrl as a parameter to the callback method.
+            );
+
+            // Configure authentication parameters for the external login.
+            var properties = _accountService.ConfigureExternalLogin(provider, redirectUrl);
+
+            // Redirect the user to the external provider's login page (e.g., Google or Facebook).
+            // The "ChallengeResult" triggers the external authentication process, which redirects the user
+            // to the external provider's login page using the configured properties.
+            return new ChallengeResult(provider, properties);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
+        {
+            // If no returnUrl is provided, default to the application's home page.
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            // Check if an error occurred during the external authentication process.
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return RedirectToAction("Login");
+            }
+
+            // Retrieve login information about the user from the external login provider.
+            var info = await _accountService.GetExternalLoginInfoAsync();
+
+            // If the login information could not be retrieved, display an error message
+            if (info == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error loading external login information.");
+                return RedirectToAction("Login");
+            }
+
+            // Attempt to sign in the user using their external login details.
+            var result = await _accountService.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+
+            // If the external login succeeds, redirect the parent window to the returnUrl
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            // If the user does not have a corresponding record in the UserLogins table create a new account
+            var createResult = await _accountService.CreateExternalUserAsync(info);
+            if (createResult.Succeeded)
+                return RedirectToAction("Index", "Home");
+
+            foreach (var error in createResult.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View("Error");
+        }
     }
 }

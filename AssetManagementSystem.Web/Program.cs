@@ -50,6 +50,15 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, MyUserClaimsPrincipalFactory>();
 
+// External Authentication - Google
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        // Load credentials from appsettings.json
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

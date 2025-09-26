@@ -1,4 +1,5 @@
 ﻿using AssetManagementSystem.Web.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
 namespace AssetManagementSystem.Web.Services
@@ -11,5 +12,11 @@ namespace AssetManagementSystem.Web.Services
         Task LogoutUserAsync();
         Task SendEmailConfirmationAsync(string email);
         Task<ProfileViewModel> GetUserProfileByEmailAsync(string email);
+
+        //Methods for External Login
+        AuthenticationProperties ConfigureExternalLogin(string provider, string? redirectUrl);
+        Task<ExternalLoginInfo?> GetExternalLoginInfoAsync();
+        Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent);
+        Task<IdentityResult> CreateExternalUserAsync(ExternalLoginInfo info);
     }
 }

@@ -57,6 +57,11 @@ builder.Services.AddAuthentication()
         // Load credentials from appsettings.json
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    })
+    .AddFacebook(facebookOptions =>
+    {
+        facebookOptions.ClientId = builder.Configuration["Authentication:Facebook:ClientId"]!;
+        facebookOptions.ClientSecret = builder.Configuration["Authentication:Facebook:ClientSecret"]!;
     });
 
 var app = builder.Build();

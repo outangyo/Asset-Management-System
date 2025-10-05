@@ -39,7 +39,7 @@
             }
 
             <form id="account" asp-action="Login" method="post" novalidate>
-                <input type="hidden" asp-for="ReturnUrl"/>
+                <input type="hidden" asp-for="ReturnUrl" />
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label fw-semibold text-primary"></label>
                     <input asp-for="Email" class="form-control" placeholder="Enter your Email Address" autocomplete="username" />
@@ -49,6 +49,9 @@
                     <label asp-for="Password" class="form-label fw-semibold text-primary"></label>
                     <input asp-for="Password" class="form-control" type="password" placeholder="Enter Your Password" autocomplete="current-password" />
                     <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+                <div class="text-center mt-2 mb-2 ml-2 d-flex justify-content-start ">
+                    <a href="#" class="text-secondary text-decoration-none small">Forgot your password?</a>
                 </div>
                 <div class="form-check mb-3">
                     <input asp-for="RememberMe" class="form-check-input" />
@@ -72,11 +75,12 @@
                 <div class="mb-3 text-center text-muted small">Use your social account for instant access:</div>
                 <div class="d-grid gap-3 mb-3">
                     <a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google" asp-route-returnUrl="@Model.ReturnUrl"
-                       class="btn btn-outline-primary d-flex align-items-center justify-content-center fw-semibold">
+                       class="btn btn-outline-primary d-flex align-items-center justify-content-center fw-semibold mb-2">
                         <img src="https://img.icons8.com/color/32/000000/google-logo.png" class="me-2" style="width:24px" alt="Google" />
                         Google
                     </a>
-                    <a href="#" class="btn d-flex align-items-center justify-content-center fw-semibold" style="background-color: #3b5998; color: #fff; margin-bottom: 5px;">
+                    <a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Facebook" asp-route-returnUrl="@Model.ReturnUrl"
+                       class="btn d-flex align-items-center justify-content-center fw-semibold" style="background-color: #3b5998; color: #fff; margin-bottom: 5px;">
                         <img src="https://img.icons8.com/fluency/32/000000/facebook-new.png" class="me-2" style="width:24px" alt="Facebook" />
                         Facebook
                     </a>

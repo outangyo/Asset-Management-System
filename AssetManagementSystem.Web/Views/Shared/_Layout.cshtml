@@ -86,7 +86,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <h1>Asset Management System</h1>
+                    <h1 class="display-5">Asset Management System</h1>
                 </li>
             </ul>
 
@@ -174,43 +174,15 @@
                                 </p>
                             </a>
                         </li>
-                        @* <li class="nav-header">Access</li> *@
 
                         <!-- Asset Menu -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item @IsMenuOpen("asset")">
+                            <a asp-controller="asset" asp-action="Index" class="nav-link @IsLinkActive("asset", "index")">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Asset
-                                    <i class="fas fa-angle-left right"></i>
+                                    Assets
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-plus nav-icon"></i>
-                                        <p>Setup 1</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-edit nav-icon"></i>
-                                        <p>Setup 2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-list nav-icon"></i>
-                                        <p>Setup 3</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-cog nav-icon"></i>
-                                        <p>Setup 4</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
                         <!-- Adminstration Menu -->

@@ -49,6 +49,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, MyUserClaimsPrincipalFactory>();
+builder.Services.AddScoped<IAssetService, AssetService>();
 
 // External Authentication - Google
 builder.Services.AddAuthentication()

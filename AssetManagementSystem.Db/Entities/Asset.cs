@@ -8,13 +8,16 @@ namespace AssetManagementSystem.Db.Entities
 {
     public class Asset
     {
-        public int Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }   // asset name
-        public string Description { get; set; }  // details about asset
-        public string Category { get; set; }     // e.g., IT, Furniture, Vehicle
-        public string Location { get; set; }     // where the asset is kept
-        public string Department { get; set; }   // which department uses it
-
+        public Guid Id { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; } // อนุญาตให้เป็น null ได้
+        public string Category { get; set; } = string.Empty;
+        public string Department { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public string? Note { get; set; } // อนุญาตให้เป็น null ได้
+        public Guid UserId { get; set; } // Foreign key ไปยัง ApplicationUser
+        public DateTime DateRegister { get; set; }
+        public bool IsActive { get; set; }
     }
 }

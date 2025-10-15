@@ -48,6 +48,7 @@ namespace AssetManagementSystem.Web.Controllers
                 return View("Error");
             }
         }
+
         // POST: /Roles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -79,6 +80,7 @@ namespace AssetManagementSystem.Web.Controllers
                 return View("Error");
             }
         }
+
         // GET: /Roles/Edit/{id}
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
@@ -95,6 +97,7 @@ namespace AssetManagementSystem.Web.Controllers
                 return View("Error");
             }
         }
+
         // POST: /Roles/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -125,6 +128,7 @@ namespace AssetManagementSystem.Web.Controllers
                 return View("Error");
             }
         }
+
         // GET: /Roles/Details/{id}?page=1&pageSize=4
         [HttpGet]
         public async Task<IActionResult> Details(Guid id, int pageNumber = 1, int pageSize = 4)

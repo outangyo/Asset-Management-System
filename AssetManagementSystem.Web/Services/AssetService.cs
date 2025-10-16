@@ -1,6 +1,8 @@
 ﻿using AssetManagementSystem.Db.Data;
+using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.Models;
 using AssetManagementSystem.Web.Models.Assets;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssetManagementSystem.Web.Services
@@ -52,6 +54,43 @@ namespace AssetManagementSystem.Web.Services
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize
             };
+        }
+
+        public async Task<(IdentityResult result, Guid id)> CreateAsync(AssetCreateViewModel model, Guid userId)
+        {
+            // สร้าง Entity ใหม่จาก ViewModel
+            var asset = new Asset
+            {
+                Id = Guid.NewGuid(), // สร้าง Guid ใหม่
+                Code = model.Code,
+                Name = model.Name,
+                Description = model.Description,
+                Category = model.Category,
+                Department = model.Department,
+                Location = model.Location,
+                Note = model.Note,
+                DateRegister = model.DateRegister,
+                IsActive = model.IsActive,
+                UserId = userId // บันทึกว่าใครเป็นคนสร้าง
+            };
+
+            // เพิ่มลงใน DbContext
+            _context.Assets.Add(asset);
+
+            // บันทึกการเปลี่ยนแปลงลงฐานข้อมูล
+            var saved = await _context.SaveChangesAsync();
+
+            // ตรวจสอบว่าบันทึกสำเร็จหรือไม่
+            if (saved > 0)
+            {
+                // ถ้าสำเร็จ คืนค่า Success และ Id ของ Asset ใหม่
+                return (IdentityResult.Success, asset.Id);
+            }
+            else
+            {
+                // ถ้าล้มเหลว คืนค่า Failed
+                return (IdentityResult.Failed(new IdentityError { Description = "Could not save asset to the database." }), Guid.Empty);
+            }
         }
     }
 }

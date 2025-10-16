@@ -1,0 +1,115 @@
+﻿@using AssetManagementSystem.Web.Models.Assets
+@model AssetCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Asset";
+}
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="gap-2 mb-4 pb-2 border-bottom">
+        <h1 class="h3 fw-bold text-primary mb-1">Add New Asset</h1>
+        <p class="text-muted mb-0">Fill in the details below to add a new asset to the system.</p>
+    </div>
+
+    <form asp-action="Create" method="post" novalidate>
+        <div class="row g-4">
+            <!-- Left Column: Main Form -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <!-- Validation Summary (optional but recommended) -->
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <!-- Code -->
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Code" class="form-label fw-semibold"></label>
+                                <input asp-for="Code" class="form-control" placeholder="e.g., LAP-001, MON-DELL-24" />
+                                <span asp-validation-for="Code" class="text-danger"></span>
+                            </div>
+
+                            <!-- Name -->
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Name" class="form-label fw-semibold"></label>
+                                <input asp-for="Name" class="form-control" placeholder="e.g., Dell Latitude 5420" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Category -->
+                            <div class="mb-3 col-md-4">
+                                <label asp-for="Category" class="form-label fw-semibold"></label>
+                                <input asp-for="Category" class="form-control" placeholder="e.g., IT, Furniture" />
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+
+                            <!-- Department -->
+                            <div class="mb-3 col-md-4">
+                                <label asp-for="Department" class="form-label fw-semibold"></label>
+                                <input asp-for="Department" class="form-control" placeholder="e.g., Marketing, HR" />
+                                <span asp-validation-for="Department" class="text-danger"></span>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="mb-3 col-md-4">
+                                <label asp-for="Location" class="form-label fw-semibold"></label>
+                                <input asp-for="Location" class="form-control" placeholder="e.g., Building A, 2nd Floor" />
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description" rows="3" class="form-control" placeholder="Describe the asset (e.g., specifications, condition)"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Note -->
+                        <div class="mb-3">
+                            <label asp-for="Note" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Note" rows="2" class="form-control" placeholder="Any additional notes or comments"></textarea>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <!-- Registered Date -->
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="DateRegister" class="form-label fw-semibold"></label>
+                                <input asp-for="DateRegister" type="date" class="form-control" />
+                                <span asp-validation-for="DateRegister" class="text-danger"></span>
+                            </div>
+
+                            <!-- Active Status -->
+                            <div class="mb-3 col-md-6 d-flex align-items-center">
+                                <div class="form-check form-switch mt-3">
+                                    <input asp-for="IsActive" class="form-check-input" />
+                                    <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Actions -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3">Actions</h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Add Asset</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

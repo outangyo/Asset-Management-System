@@ -1,10 +1,12 @@
 ﻿using AssetManagementSystem.Web.Models;
 using AssetManagementSystem.Web.Models.Assets;
+using Microsoft.AspNetCore.Identity;
 
 namespace AssetManagementSystem.Web.Services
 {
     public interface IAssetService
     {
         Task<PagedResult<AssetListItemViewModel>> GetAssetsAsync(AssetListFilterViewModel filter);
+        Task<(IdentityResult result, Guid id)> CreateAsync(AssetCreateViewModel model, Guid userId);
     }
 }

@@ -1,6 +1,6 @@
 ﻿@using AssetManagementSystem.Web.Models
 @using AssetManagementSystem.Web.Models.Assets
-@model PagedResult<AssetListItemViewModel>
+@model AssetIndexViewModel
 
 @{
     ViewData["Title"] = "Asset Management";
@@ -17,30 +17,48 @@
         </div>
         <div>
             <a asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-1"></i>Create New Role
+                <i class="bi bi-plus-lg me-1"></i>Add New Asset
             </a>
         </div>
     </div>
 
     <!-- Filter/Search Form -->
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
-            <form asp-action="Index" method="get">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-8">
-                        <label class="form-label">Search</label>
-                        <input type="text" name="Search" class="form-control" placeholder="Search by Code, Name, or Category..." />
-                    </div>
-                    <div class="col-md-2 justify-content-end">
-                        <button type="submit" class="btn btn-info w-100">Apply Filter</button>
-                    </div>
-                </div>
-            </form>
+    <form method="get" asp-action="Index" asp-controller="asset" class="row g-2 align-items-end mb-3">
+        <div class="col-md-4">
+            <label class="form-label">Search</label>
+            <input name="Search" value="@Model.Filter.Search" class="form-control"
+                   placeholder="Search by name or description..." />
         </div>
-    </div>
+        <div class="col-md-3">
+            <label class="form-label">Status</label>
+            <select name="IsActive" class="form-select">
+                <option value="">All Status</option>
+                <option value="true" selected="@(Model.Filter.IsActive == true)">Active</option>
+                <option value="false" selected="@(Model.Filter.IsActive == false)">Inactive</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Page Size</label>
+            <select name="PageSize" class="form-select">
+                @foreach (var size in new[] { 5, 10, 20, 50 })
+                {
+                    <option value="@size" selected="@(Model.Filter.PageSize == size)">@size / page</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 d-grid d-sm-flex gap-2">
+            <button class="btn btn-primary" type="submit">
+                <i class="bi bi-funnel me-1"></i> Apply
+            </button>
+            <!-- Clear = go to Index without query string -->
+            <a asp-action="Index" class="btn btn-info">
+                <i class="bi bi-x-circle me-1"></i> Clear
+            </a>
+        </div>
+    </form>
 
     <!-- Data Table -->
-    <div class="card shadow-sm">
+    <div class="card shadow border-0 rounded">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
@@ -53,19 +71,19 @@
                             <th>Location</th>
                             <th>Registered Date</th>
                             <th>Status</th>
-                            <th class="text-end actions-no-wrap">Actions</th>
+                            <th class="text-center actions-no-wrap">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (!Model.Items.Any())
+                        @if (!Model.PagedAssets.Items.Any())
                         {
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">No assets found.</td>
+                                <td colspan="8" class="text-center text-muted py-4">No asset found.</td>
                             </tr>
                         }
                         else
                         {
-                            foreach (var asset in Model.Items)
+                            @foreach (var asset in Model.PagedAssets.Items)
                             {
                                 <tr>
                                     <td>@asset.Code</td>
@@ -85,11 +103,9 @@
                                         }
                                     </td>
                                     <td class="text-end actions-no-wrap">
-                                        <div class="btn-group btn-group-sm">
-                                            <a asp-action="Details" asp-route-id="@asset.Id" class="btn btn-info">View</a>
-                                            <a asp-action="Edit" asp-route-id="@asset.Id" class="btn btn-primary">Edit</a>
-                                            <button type="button" class="btn btn-danger">Delete</button>
-                                        </div>
+                                            <a asp-action="Details" asp-route-id="@asset.Id" class="btn btn-sm btn-outline-info me-2">Details</a>
+                                            <a asp-action="Edit" asp-route-id="@asset.Id" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
                                     </td>
                                 </tr>
                             }

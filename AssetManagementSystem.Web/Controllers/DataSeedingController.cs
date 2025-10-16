@@ -19,5 +19,12 @@ namespace AssetManagementSystem.Web.Controllers
             await IdentityUserSeeder.SeedUsersAsync(_services);
             return Ok("Dummy users have been seeded successfully.");
         }
+
+        [HttpPost("seed-dummy-assets")]
+        public async Task<IActionResult> SeedDummyAssets()
+        {
+            await AssetSeeder.SeedAssetsAsync(_services);
+            return Ok("Dummy assets have been seeded successfully.");
+        }
     }
 }

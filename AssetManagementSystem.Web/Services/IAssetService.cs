@@ -9,5 +9,7 @@ namespace AssetManagementSystem.Web.Services
         Task<PagedResult<AssetListItemViewModel>> GetAssetsAsync(AssetListFilterViewModel filter);
         Task<(IdentityResult result, Guid id)> CreateAsync(AssetCreateViewModel model, Guid userId);
         Task<AssetDetailsViewModel?> GetDetailsAsync(Guid id);
+        Task<AssetEditViewModel?> GetForEditAsync(Guid id);
+        Task<IdentityResult> UpdateAsync(AssetEditViewModel model);
     }
 }

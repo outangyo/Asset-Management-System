@@ -132,5 +132,58 @@ namespace AssetManagementSystem.Web.Services
                 CreatedByUserName = asset.User?.UserName
             };
         }
+
+        // เมธอดสำหรับดึงข้อมูลมาแสดงในฟอร์ม Edit
+        public async Task<AssetEditViewModel?> GetForEditAsync(Guid id)
+        {
+            var asset = await _context.Assets
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (asset == null)
+            {
+                return null;
+            }
+
+            // Map Entity เป็น EditViewModel
+            return new AssetEditViewModel
+            {
+                Id = asset.Id,
+                Code = asset.Code,
+                Name = asset.Name,
+                Description = asset.Description,
+                Category = asset.Category,
+                Department = asset.Department,
+                Location = asset.Location,
+                Note = asset.Note,
+                DateRegister = asset.DateRegister,
+                IsActive = asset.IsActive
+            };
+        }
+
+        // เมธอดสำหรับบันทึกข้อมูลที่แก้ไข
+        public async Task<IdentityResult> UpdateAsync(AssetEditViewModel model)
+        {
+            var assetToUpdate = await _context.Assets.FindAsync(model.Id);
+            if (assetToUpdate == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Asset not found." });
+            }
+
+            // อัปเดตค่าจาก ViewModel ไปยัง Entity
+            assetToUpdate.Code = model.Code;
+            assetToUpdate.Name = model.Name;
+            assetToUpdate.Description = model.Description;
+            assetToUpdate.Category = model.Category;
+            assetToUpdate.Department = model.Department;
+            assetToUpdate.Location = model.Location;
+            assetToUpdate.Note = model.Note;
+            assetToUpdate.DateRegister = model.DateRegister;
+            assetToUpdate.IsActive = model.IsActive;
+            // ไม่ควรอัปเดต UserId หรือ CreatedDate
+
+            await _context.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
     }
 }

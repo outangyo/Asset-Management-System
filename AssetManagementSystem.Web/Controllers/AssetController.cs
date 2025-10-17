@@ -117,5 +117,63 @@ namespace AssetManagementSystem.Web.Controllers
                 return View("Error");
             }
         }
+
+        // GET: /Assets/Edit/{id}
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var model = await _assetService.GetForEditAsync(id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching asset for edit with ID {AssetId}", id);
+                return View("Error");
+            }
+        }
+
+        // POST: /Assets/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AssetEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var result = await _assetService.UpdateAsync(model);
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = $"Asset '{model.Name}' updated successfully.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating asset {AssetId}", model.Id);
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred.");
+            }
+
+            return View(model);
+        }
     }
 }

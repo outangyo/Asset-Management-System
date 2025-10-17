@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,5 +20,8 @@ namespace AssetManagementSystem.Db.Entities
         public Guid UserId { get; set; } // Foreign key ไปยัง ApplicationUser
         public DateTime DateRegister { get; set; }
         public bool IsActive { get; set; }
+
+        [ForeignKey("UserId")] // (Optional but good practice) บอก EF ว่า UserId คือ Foreign Key
+        public virtual ApplicationUser User { get; set; } = null!;
     }
 }

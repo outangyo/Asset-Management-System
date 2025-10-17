@@ -1,0 +1,69 @@
+﻿@using AssetManagementSystem.Web.Models.Assets
+@model AssetDetailsViewModel
+
+@{
+    ViewData["Title"] = "Asset Details";
+}
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h1 class="h3 fw-bold text-primary mb-1">@Model.Name</h1>
+        <p class="text-muted mb-0">Details for Asset Code: @Model.Code</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Asset Information</h5>
+            
+        </div>
+        <div class="card-body ">
+            <dl class="row ">
+                <dt class="col-sm-3 pb-2 mb-2">Name</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.Name</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Code</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.Code</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Category</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.Category</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Department</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.Department</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Location</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.Location</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Status</dt>
+                <dd class="col-sm-9 pb-2 mb-2">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Registered Date</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.DateRegister.ToString("D")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Created By</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.CreatedByUserName</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Description</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@(Model.Description ?? "N/A")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Note</dt>
+                <dd class="col-sm-9 pb-2 ">@(Model.Note ?? "N/A")</dd>
+            </dl>
+
+            <div style="justify-content: center; display: flex; gap: 5px;">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">Back to List</a>
+            </div>
+        </div>
+
+    </div>
+</div>

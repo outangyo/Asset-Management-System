@@ -90,5 +90,32 @@ namespace AssetManagementSystem.Web.Controllers
 
             return View(model);
         }
+
+        // ใน AssetController.cs
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest(); // ถ้าไม่มี Id ส่งมา
+            }
+
+            try
+            {
+                var model = await _assetService.GetDetailsAsync(id);
+
+                if (model == null)
+                {
+                    return NotFound(); // ถ้า Service หา Asset ไม่เจอ
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching details for asset ID {AssetId}", id);
+                return View("Error");
+            }
+        }
     }
 }

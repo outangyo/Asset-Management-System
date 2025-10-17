@@ -102,5 +102,35 @@ namespace AssetManagementSystem.Web.Services
                 return (IdentityResult.Failed(new IdentityError { Description = "Could not save asset to the database." }), Guid.Empty);
             }
         }
+
+        public async Task<AssetDetailsViewModel?> GetDetailsAsync(Guid id)
+        {
+            var asset = await _context.Assets
+                .Include(a => a.User) // <-- ใช้ .Include() เพื่อดึงข้อมูล User ที่เกี่ยวข้องมาพร้อมกัน
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (asset == null)
+            {
+                return null; // ถ้าหา Asset ไม่เจอ
+            }
+
+            // แปลง Entity เป็น ViewModel
+            return new AssetDetailsViewModel
+            {
+                Id = asset.Id,
+                Code = asset.Code,
+                Name = asset.Name,
+                Description = asset.Description,
+                Category = asset.Category,
+                Department = asset.Department,
+                Location = asset.Location,
+                Note = asset.Note,
+                DateRegister = asset.DateRegister,
+                IsActive = asset.IsActive,
+                // ดึงชื่อ User มาจาก Navigation Property
+                CreatedByUserName = asset.User?.UserName
+            };
+        }
     }
 }

@@ -21,11 +21,21 @@ namespace AssetManagementSystem.Web.Services
         {
             var query = _context.Assets.AsNoTracking();
 
+            // Filter for search
             if (!string.IsNullOrWhiteSpace(filter.Search))
             {
-                query = query.Where(a => a.Name.Contains(filter.Search)
-                                      || a.Category.Contains(filter.Search)
-                                      || a.Code.Contains(filter.Search)); // <-- เพิ่มการค้นหาด้วย Code
+                var searchTerm = filter.Search.Trim();
+                query = query.Where(a => a.Name.Contains(searchTerm)
+                                      || a.Category.Contains(searchTerm)
+                                      || a.Code.Contains(searchTerm)
+                                      || a.Department.Contains(searchTerm)
+                                      || a.Location.Contains(searchTerm));
+            }
+
+            // Filter by Status (IsActive) ---
+            if (filter.IsActive.HasValue)
+            {
+                query = query.Where(a => a.IsActive == filter.IsActive.Value);
             }
 
             var total = await query.CountAsync();

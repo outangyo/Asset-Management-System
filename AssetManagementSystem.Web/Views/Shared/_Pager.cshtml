@@ -1,6 +1,6 @@
 ﻿@using AssetManagementSystem.Web.Models
 
-@model PagedResult<object>
+@model IPagedResult
 
 @* The pager works with any list wrapped inside a PagedResult<T> model *@
 @{
@@ -14,7 +14,7 @@
     foreach (var kv in ViewContext.HttpContext.Request.Query)
     {
         // Skip the "page" parameter because we'll manually set it later for each link
-        if (!string.Equals(kv.Key, "pagenumber", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(kv.Key, "PageNumber", StringComparison.OrdinalIgnoreCase))
         {
             // Store the query parameter and its value in the dictionary
             // Example: search=Admin, isActive=true, pagesize=5
@@ -43,7 +43,7 @@
                asp-controller="@controller"
                asp-action="@action"
                asp-all-route-data="routeValues"
-               asp-route-pagenumber="@firstPage">First</a>
+               asp-route-PageNumber="@firstPage">First</a>
         </li>
         <!-- Previous Page Button -->
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
@@ -51,7 +51,7 @@
                asp-controller="@controller"
                asp-action="@action"
                asp-all-route-data="routeValues"
-               asp-route-pagenumber="@prevPage">
+               asp-route-PageNumber="@prevPage">
                 <!-- Set page to previous page -->
                 Previous
             </a>
@@ -68,7 +68,7 @@
                asp-controller="@controller"
                asp-action="@action"
                asp-all-route-data="routeValues"
-               asp-route-pagenumber="@nextPage">
+               asp-route-PageNumber="@nextPage">
                 <!-- Set page to next page -->
                 Next
             </a>
@@ -79,7 +79,7 @@
                asp-controller="@controller"
                asp-action="@action"
                asp-all-route-data="routeValues"
-               asp-route-pagenumber="@lastPage">
+               asp-route-PageNumber="@lastPage">
                 <!-- Set page to last page -->
                 Last
             </a>

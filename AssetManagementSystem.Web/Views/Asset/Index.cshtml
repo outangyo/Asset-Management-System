@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <label class="form-label">Search</label>
             <input name="Search" value="@Model.Filter.Search" class="form-control"
-                   placeholder="Search by name or description..." />
+                   placeholder="Search by name or category or etc" />
         </div>
         <div class="col-md-3">
             <label class="form-label">Status</label>
@@ -46,6 +46,7 @@
                 }
             </select>
         </div>
+
         <div class="col-md-2 d-grid d-sm-flex gap-2">
             <button class="btn btn-primary" type="submit">
                 <i class="bi bi-funnel me-1"></i> Apply
@@ -116,10 +117,15 @@
         </div>
     </div>
 
-    <!-- Pagination Controls (Optional) -->
+    <!-- Pagination Controls -->
     
     @* <div class="mt-3">
         <partial name="_PaginationPartial" model="Model" />
     </div> *@
+
+    <!-- Pagination Controls -->
+    <div class="mt-3">
+        <partial name="_Pager" model="Model.PagedAssets" />
+    </div>
    
 </div>

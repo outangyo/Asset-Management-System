@@ -175,5 +175,36 @@ namespace AssetManagementSystem.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var result = await _assetService.DeleteAsync(id);
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Asset deleted successfully.";
+                }
+                else
+                {
+                    // นำ Error แรกมาแสดง (ถ้ามี)
+                    TempData["Error"] = result.Errors.FirstOrDefault()?.Description ?? "Failed to delete asset.";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting asset {AssetId}", id);
+                TempData["Error"] = "An unexpected error occurred while deleting the asset.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

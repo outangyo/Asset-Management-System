@@ -11,5 +11,6 @@ namespace AssetManagementSystem.Web.Services
         Task<AssetDetailsViewModel?> GetDetailsAsync(Guid id);
         Task<AssetEditViewModel?> GetForEditAsync(Guid id);
         Task<IdentityResult> UpdateAsync(AssetEditViewModel model);
+        Task<IdentityResult> DeleteAsync(Guid id);
     }
 }

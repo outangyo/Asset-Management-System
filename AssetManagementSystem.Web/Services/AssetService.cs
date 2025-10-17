@@ -185,5 +185,17 @@ namespace AssetManagementSystem.Web.Services
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
+        public async Task<IdentityResult> DeleteAsync(Guid id)
+        {
+            var assetToDelete = await _context.Assets.FindAsync(id);
+            if (assetToDelete == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Asset not found." });
+            }
+
+            _context.Assets.Remove(assetToDelete);
+            await _context.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
     }
 }

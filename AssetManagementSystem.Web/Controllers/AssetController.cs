@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManagementSystem.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin, Manager")]
     public class AssetController : Controller
     {
         private readonly IAssetService _assetService;

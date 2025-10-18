@@ -70,6 +70,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
@@ -175,43 +176,49 @@
                             </a>
                         </li>
 
-                        <!-- Asset Menu -->
-                        <li class="nav-item @IsMenuOpen("asset")">
-                            <a asp-controller="asset" asp-action="Index" class="nav-link @IsLinkActive("asset", "index")">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Assets
-                                </p>
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <!-- Asset Menu -->
+                            <li class="nav-item @IsMenuOpen("asset")">
+                                <a asp-controller="asset" asp-action="Index" class="nav-link @IsLinkActive("asset", "index")">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        Assets
+                                    </p>
+                                </a>
+                            </li>
+                        }
 
-                        <!-- Adminstration Menu -->
-                        <li class="nav-item @IsMenuOpen("Roles") @IsMenuOpen("Users")">
-                            <!-- เพิ่ม IsMenuOpen("Users") -->
-                            <a href="#" class="nav-link @IsControllerActive("Roles") @IsControllerActive("Users")">
-                                <!-- เพิ่ม IsControllerActive("Users") -->
-                                <i class="nav-icon fa fa-user-shield"></i>
-                                <p>
-                                    Administration
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <!-- Adminstration Menu -->
+                            <li class="nav-item @IsMenuOpen("Roles") @IsMenuOpen("Users")">
+                                <!-- เพิ่ม IsMenuOpen("Users") -->
+                                <a href="#" class="nav-link @IsControllerActive("Roles") @IsControllerActive("Users")">
+                                    <!-- เพิ่ม IsControllerActive("Users") -->
+                                    <i class="nav-icon fa fa-user-shield"></i>
+                                    <p>
+                                        Administration
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
 
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a asp-controller="Roles" asp-action="Index" class="nav-link @IsLinkActive("Roles", "Index")">
-                                        <i class="fas fa-user-tag nav-icon"></i>
-                                        <p>Roles Management</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="Users" asp-action="Index" class="nav-link @IsLinkActive("Users", "Index")">
-                                        <i class="fas fa-users-cog nav-icon"></i>
-                                        <p>Users Management</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-controller="Roles" asp-action="Index" class="nav-link @IsLinkActive("Roles", "Index")">
+                                            <i class="fas fa-user-tag nav-icon"></i>
+                                            <p>Roles Management</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Users" asp-action="Index" class="nav-link @IsLinkActive("Users", "Index")">
+                                            <i class="fas fa-users-cog nav-icon"></i>
+                                            <p>Users Management</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
 
                         <!-- Non Secure Page Menu -->
                         <li class="nav-item">
@@ -291,64 +298,40 @@
     <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI (MUST be after jQuery) -->
     <script src="~/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ADMINLTE PLUGINS (Order is less critical here, but keep them together) -->
-    <script src="~/AdminLTE/plugins/chart.js/Chart.min.js"></script>
-    @* <script src="~/AdminLTE/plugins/sparklines/sparkline.js"></script> *@
-    @* <script src="~/AdminLTE/plugins/jqvmap/jquery.vmap.min.js"></script> *@
-    @* <script src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js"></script> *@
-    <script src="~/AdminLTE/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <script src="~/AdminLTE/plugins/moment/moment.min.js"></script>
-    <script src="~/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="~/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="~/AdminLTE/plugins/summernote/summernote-bs4.min.js"></script>
-    <script src="~/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- DataTables & Plugins -->
-    <script src="~/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="~/AdminLTE/plugins/jszip/jszip.min.js"></script>
-    <script src="~/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="~/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <!-- AdminLTE App (Main theme script) -->
-    <script src="~/AdminLTE/dist/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    @* <script src="~/AdminLTE/dist/js/pages/dashboard.js"></script> *@
 
-    <!-- Bootstrap 5 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- BOOTSTRAP 4 SECTION (For AdminLTE) -->
     <script>
+        // Resolve conflict in jQuery UI tooltip with Bootstrap tooltip
         $.widget.bridge('uibutton', $.ui.button)
     </script>
+    <!-- Bootstrap 4 Bundle -->
+    <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom DataTables initialization -->
+    <!-- ADMINLTE & ITS PLUGINS -->
+    <!-- All AdminLTE plugins rely on jQuery and Bootstrap 4 -->
+    <script src="~/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/AdminLTE/plugins/moment/moment.min.js"></script>
+    <script src="~/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- ... other AdminLTE plugins ... -->
+    <script src="~/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- ... etc ... -->
+    <!-- AdminLTE App (Main theme script - MUST be loaded after its plugins) -->
+    <script src="~/AdminLTE/dist/js/adminlte.js"></script>
+
+    <!-- BOOTSTRAP 5 SECTION (For your custom components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- YOUR CUSTOM SCRIPTS -->
     <script>
+        // Your custom DataTables initialization or other scripts go here
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
         });
     </script>
-
-    <!-- My site custom scripts -->
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <!-- Renders scripts from individual pages -->

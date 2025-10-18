@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace AssetManagementSystem.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;

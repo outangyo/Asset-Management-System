@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Service 1: The SQL Server Database
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: assetmanagement-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD= PasswordTest123 # <-- ตั้งรหัสผ่านที่นี่!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  # Service 2: The Web Application
+  web:
+    container_name: assetmanagement-web
+    build:
+      context: .
+      dockerfile: AssetManagementSystem.Web/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      # vvvvvvvvvv นี่คือส่วนที่สำคัญที่สุด vvvvvvvvvv
+      - ConnectionStrings__DefaultConnection=Server=db; Database=AssetManagementDB; User Id=sa; Password=PasswordTest123; TrustServerCertificate=True;
+      # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      # --- Secrets for Email ---
+      - EmailSettings__Password=amlbiktzijzeznxe
+
+      # --- Secrets for Google Auth ---
+      - Authentication__Google__ClientId=876476881383-8efdkemlst1fp6rakcphgcpdhi58mtqg.apps.googleusercontent.com
+      - Authentication__Google__ClientSecret=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
+
+      # --- Secrets for Facebook Auth ---
+      - Authentication__Facebook__ClientId=651501364429528
+      - Authentication__Facebook__ClientSecret=df03397b02feea2949b7520e1a8c3a5c
+
+    depends_on:
+      - db
+
+volumes:
+  sqlserver_data:

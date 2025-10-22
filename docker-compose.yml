@@ -1,46 +1,59 @@
-version: '3.8'
-
 services:
-  # Service 1: The SQL Server Database
+  # SQL Server Database
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     container_name: assetmanagement-db
+    user: root
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD= PasswordTest123 # <-- ตั้งรหัสผ่านที่นี่!
+      ACCEPT_EULA: Y
+      SA_PASSWORD: PasswordTest123
     ports:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P PasswordTest123 -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
-  # Service 2: The Web Application
-  web:
-    container_name: assetmanagement-web
+  # Run EF Core Migrations
+  migrations:
     build:
       context: .
       dockerfile: AssetManagementSystem.Web/Dockerfile
+      target: publish
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=AssetManagementDB;User Id=sa;Password=PasswordTest123;TrustServerCertificate=True;
+    entrypoint: /bin/bash
+    command: ["-c", "/root/.dotnet/tools/dotnet-ef database update --project ../AssetManagementSystem.Db/AssetManagementSystem.Db.csproj && echo 'Migrations complete!'"]
+
+  # Web Application
+  web:
+    build:
+      context: .
+      dockerfile: AssetManagementSystem.Web/Dockerfile
+    container_name: assetmanagement-web
     ports:
       - "8080:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      # vvvvvvvvvv นี่คือส่วนที่สำคัญที่สุด vvvvvvvvvv
-      - ConnectionStrings__DefaultConnection=Server=db; Database=AssetManagementDB; User Id=sa; Password=PasswordTest123; TrustServerCertificate=True;
-      # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-      # --- Secrets for Email ---
+      - ConnectionStrings__DefaultConnection=Server=db;Database=AssetManagementDB;User Id=sa;Password=PasswordTest123;TrustServerCertificate=True;
+      # --- SECRETS ADDED HERE ---
       - EmailSettings__Password=amlbiktzijzeznxe
-
-      # --- Secrets for Google Auth ---
       - Authentication__Google__ClientId=876476881383-8efdkemlst1fp6rakcphgcpdhi58mtqg.apps.googleusercontent.com
       - Authentication__Google__ClientSecret=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
-
-      # --- Secrets for Facebook Auth ---
       - Authentication__Facebook__ClientId=651501364429528
       - Authentication__Facebook__ClientSecret=df03397b02feea2949b7520e1a8c3a5c
-
     depends_on:
-      - db
+      migrations:
+        condition: service_completed_successfully
 
 volumes:
   sqlserver_data:

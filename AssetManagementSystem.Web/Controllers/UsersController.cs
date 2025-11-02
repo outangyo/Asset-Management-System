@@ -1,5 +1,5 @@
 ﻿using AssetManagementSystem.Web.ViewModels.Users;
-using AssetManagementSystem.Web.ViewModels;
+using AssetManagementSystem.Web.ViewModels.Shared;
 using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

@@ -1,7 +1,7 @@
 ﻿using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
-using AssetManagementSystem.Web.ViewModels;
 using AssetManagementSystem.Web.ViewModels.Assets;
+using AssetManagementSystem.Web.ViewModels.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

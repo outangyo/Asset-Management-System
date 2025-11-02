@@ -1,4 +1,5 @@
-﻿using AssetManagementSystem.Web.ViewModels.Users;
+﻿using AssetManagementSystem.Web.ViewModels.Shared;
+using AssetManagementSystem.Web.ViewModels.Users;
 
 namespace AssetManagementSystem.Web.ViewModels
 {

@@ -1,4 +1,6 @@
-﻿namespace AssetManagementSystem.Web.ViewModels.Assets
+﻿using AssetManagementSystem.Web.ViewModels.Shared;
+
+namespace AssetManagementSystem.Web.ViewModels.Assets
 {
     public class AssetIndexViewModel
     {

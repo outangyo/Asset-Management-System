@@ -1,4 +1,6 @@
-﻿namespace AssetManagementSystem.Web.ViewModels.Roles
+﻿using AssetManagementSystem.Web.ViewModels.Shared;
+
+namespace AssetManagementSystem.Web.ViewModels.Roles
 {
     public class RoleDetailsViewModel
     {

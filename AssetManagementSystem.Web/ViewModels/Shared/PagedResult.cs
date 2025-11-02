@@ -1,4 +1,4 @@
-﻿namespace AssetManagementSystem.Web.ViewModels
+﻿namespace AssetManagementSystem.Web.ViewModels.Shared
 {
     public class PagedResult<T> : IPagedResult
     {

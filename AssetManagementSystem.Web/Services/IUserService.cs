@@ -1,6 +1,6 @@
 ﻿using AssetManagementSystem.Web.ViewModels.Users;
-using AssetManagementSystem.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using AssetManagementSystem.Web.ViewModels.Shared;
 
 namespace AssetManagementSystem.Web.Services
 {

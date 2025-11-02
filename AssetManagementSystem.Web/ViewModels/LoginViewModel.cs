@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel.DataAnnotations;
 
-namespace AssetManagementSystem.Web.Models
+namespace AssetManagementSystem.Web.ViewModels
 {
     public class LoginViewModel
     {

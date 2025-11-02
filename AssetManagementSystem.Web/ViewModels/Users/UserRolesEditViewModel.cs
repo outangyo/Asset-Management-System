@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AssetManagementSystem.Web.Models.Users
+namespace AssetManagementSystem.Web.ViewModels.Users
 {
     public class UserRolesEditViewModel
     {

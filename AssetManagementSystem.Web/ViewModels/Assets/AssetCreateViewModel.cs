@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AssetManagementSystem.Web.Models.Assets
+namespace AssetManagementSystem.Web.ViewModels.Assets
 {
-    public class AssetEditViewModel
+    public class AssetCreateViewModel
     {
-        [Required]
-        public Guid Id { get; set; }
-
         [Required]
         [StringLength(20)]
         public string Code { get; set; } = string.Empty;
@@ -33,16 +30,12 @@ namespace AssetManagementSystem.Web.Models.Assets
         [StringLength(200)]
         public string? Note { get; set; }
 
-        // ข้อมูลเพิ่มเติมที่ดึงมาจาก User ที่สร้าง Asset
-        [Display(Name = "Created By")]
-        public string? CreatedByUserName { get; set; }
-
         [Required]
         [Display(Name = "Registered Date")]
         [DataType(DataType.Date)]
-        public DateTime DateRegister { get; set; }
+        public DateTime DateRegister { get; set; } = DateTime.UtcNow;
 
         [Display(Name = "Active")]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

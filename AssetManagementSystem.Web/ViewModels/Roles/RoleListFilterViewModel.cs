@@ -1,6 +1,6 @@
-﻿namespace AssetManagementSystem.Web.Models.Assets
+﻿namespace AssetManagementSystem.Web.ViewModels.Roles
 {
-    public class AssetListFilterViewModel
+    public class RoleListFilterViewModel
     {
         public string? Search { get; set; }
         public bool? IsActive { get; set; }

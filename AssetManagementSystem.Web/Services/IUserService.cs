@@ -1,5 +1,5 @@
-﻿using AssetManagementSystem.Web.Models.Users;
-using AssetManagementSystem.Web.Models;
+﻿using AssetManagementSystem.Web.ViewModels.Users;
+using AssetManagementSystem.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace AssetManagementSystem.Web.Services

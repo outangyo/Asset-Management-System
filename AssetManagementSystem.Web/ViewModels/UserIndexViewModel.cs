@@ -1,6 +1,6 @@
-﻿using AssetManagementSystem.Web.Models.Users;
+﻿using AssetManagementSystem.Web.ViewModels.Users;
 
-namespace AssetManagementSystem.Web.Models
+namespace AssetManagementSystem.Web.ViewModels
 {
     public class UserIndexViewModel
     {

@@ -1,4 +1,4 @@
-namespace AssetManagementSystem.Web.Models
+namespace AssetManagementSystem.Web.ViewModels
 {
     public class ErrorViewModel
     {

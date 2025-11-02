@@ -1,4 +1,4 @@
-﻿namespace AssetManagementSystem.Web.Models.Roles
+﻿namespace AssetManagementSystem.Web.ViewModels.Roles
 {
     public class UserInRoleViewModel
     {

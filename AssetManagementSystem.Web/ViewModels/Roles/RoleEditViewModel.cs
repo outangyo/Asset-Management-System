@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AssetManagementSystem.Web.Models.Roles
+namespace AssetManagementSystem.Web.ViewModels.Roles
 {
-    public class RoleCreateViewModel
+    public class RoleEditViewModel
     {
+        [Required(ErrorMessage = "Id is required.")]
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(256, ErrorMessage = "Name cannot exceed 256 characters.")]
         public string Name { get; set; } = null!;
@@ -13,5 +16,6 @@ namespace AssetManagementSystem.Web.Models.Roles
 
         [Display(Name = "Active?")]
         public bool IsActive { get; set; } = true;
+        public string? ConcurrencyStamp { get; set; }
     }
 }

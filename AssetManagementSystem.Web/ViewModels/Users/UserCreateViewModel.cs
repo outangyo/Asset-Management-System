@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace AssetManagementSystem.Web.Models.Users
+namespace AssetManagementSystem.Web.ViewModels.Users
 {
     public class UserCreateViewModel : IValidatableObject
     {

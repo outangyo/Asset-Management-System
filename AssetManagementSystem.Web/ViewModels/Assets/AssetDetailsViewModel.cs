@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AssetManagementSystem.Web.Models.Assets
+namespace AssetManagementSystem.Web.ViewModels.Assets
 {
     public class AssetDetailsViewModel
     {

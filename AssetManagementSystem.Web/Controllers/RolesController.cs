@@ -1,4 +1,4 @@
-﻿using AssetManagementSystem.Web.Models.Roles;
+﻿using AssetManagementSystem.Web.ViewModels.Roles;
 using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

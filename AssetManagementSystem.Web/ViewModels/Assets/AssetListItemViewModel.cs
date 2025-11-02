@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AssetManagementSystem.Web.Models.Assets
+namespace AssetManagementSystem.Web.ViewModels.Assets
 {
     public class AssetListItemViewModel
     {

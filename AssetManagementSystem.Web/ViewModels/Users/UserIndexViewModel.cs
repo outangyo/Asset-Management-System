@@ -1,7 +1,6 @@
 ﻿using AssetManagementSystem.Web.ViewModels.Shared;
-using AssetManagementSystem.Web.ViewModels.Users;
 
-namespace AssetManagementSystem.Web.ViewModels
+namespace AssetManagementSystem.Web.ViewModels.Users
 {
     public class UserIndexViewModel
     {

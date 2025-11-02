@@ -1,10 +1,10 @@
 ﻿using AssetManagementSystem.Db.Entities;
-using AssetManagementSystem.Web.ViewModels;
 using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using AssetManagementSystem.Web.ViewModels.Account;
 
 namespace AssetManagementSystem.Web.Controllers
 {

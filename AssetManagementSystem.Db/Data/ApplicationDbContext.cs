@@ -36,7 +36,9 @@ namespace AssetManagementSystem.Db.Data
             );
         }
 
-        public DbSet<Asset> Assets { get; set; }
         public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Asset> Assets { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
     }
 }

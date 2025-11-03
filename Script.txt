@@ -1,4 +1,4 @@
-Docker Command
+    Docker Command
 
 docker --version	// version
 docker info		// information
@@ -13,7 +13,28 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=1q2w3e+-12" -p 1433:1433 --n
 // stop image หา id โดยใช้คำสั่ง docker ps
 docker container stop 59cf2c1afdcb
 
-Migration 
+    Docker Compose Steps
+1. บนเครื่องที่สอง:
+    * ติดตั้ง Git
+    * ติดตั้ง Docker Desktop
+    * ติดตั้ง Postman
+2. เปิด Terminal/PowerShell
+3. รัน git clone [URL ของ GitHub Repository]
+    ตัวอย่าง: git clone
+https://www.youtube.com/watch?v=0gZ8MXZ4Izg
+4. cd เข้าไปในโฟลเดอร์โปรเจค
+5. รัน docker-compose up --build
+6. รอจนเสร็จ...
+7. เปิด Terminal ใหม่ แล้วรัน docker-compose exec web dotnet ef database update
+8. เปิด Postman แล้วยิง API เพื่อ Seed Data
+9. เปิด Browser แล้วเข้าไปที่ http://localhost:8080
 
-add-migration "Initial"
-update -database
+เปิด Terminal ใหม่
+รัน docker-compose exec web /root/.dotnet/tools/dotnet-ef database update
+
+    Migration 
+
+Add-Migration InitialSomething
+Update-Database
+
+Remove-Migration

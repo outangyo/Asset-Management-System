@@ -4,6 +4,7 @@ using AssetManagementSystem.Db.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagementSystem.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251103064106_AddSuppliersAndGiveMoreSpecificOnAssetEntities")]
+    partial class AddSuppliersAndGiveMoreSpecificOnAssetEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,13 +33,11 @@ namespace AssetManagementSystem.Db.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -49,18 +50,15 @@ namespace AssetManagementSystem.Db.Migrations
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -86,8 +84,7 @@ namespace AssetManagementSystem.Db.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -183,8 +180,7 @@ namespace AssetManagementSystem.Db.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -193,8 +189,7 @@ namespace AssetManagementSystem.Db.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -311,6 +306,9 @@ namespace AssetManagementSystem.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ContactEmail")
                         .HasMaxLength(254)
                         .HasColumnType("nvarchar(254)");
@@ -352,6 +350,8 @@ namespace AssetManagementSystem.Db.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Suppliers");
                 });
@@ -473,7 +473,7 @@ namespace AssetManagementSystem.Db.Migrations
             modelBuilder.Entity("AssetManagementSystem.Db.Entities.Asset", b =>
                 {
                     b.HasOne("AssetManagementSystem.Db.Entities.Supplier", "Supplier")
-                        .WithMany("SuppliedAssets")
+                        .WithMany()
                         .HasForeignKey("SupplierId");
 
                     b.HasOne("AssetManagementSystem.Db.Entities.ApplicationUser", "User")
@@ -485,6 +485,15 @@ namespace AssetManagementSystem.Db.Migrations
                     b.Navigation("Supplier");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AssetManagementSystem.Db.Entities.Supplier", b =>
+                {
+                    b.HasOne("AssetManagementSystem.Db.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -541,11 +550,6 @@ namespace AssetManagementSystem.Db.Migrations
             modelBuilder.Entity("AssetManagementSystem.Db.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Addresses");
-                });
-
-            modelBuilder.Entity("AssetManagementSystem.Db.Entities.Supplier", b =>
-                {
-                    b.Navigation("SuppliedAssets");
                 });
 #pragma warning restore 612, 618
         }

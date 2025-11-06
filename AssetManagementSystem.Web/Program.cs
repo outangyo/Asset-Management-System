@@ -1,9 +1,10 @@
+using AssetManagementSystem.Core.Repositories;
 using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
+using AssetManagementSystem.Web.Factories;
 using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using AssetManagementSystem.Web.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,7 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
     options.TokenLifespan = TimeSpan.FromMinutes(30);
 });
 
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -50,6 +52,7 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, MyUserClaimsPrincipalFactory>();
 builder.Services.AddScoped<IAssetService, AssetService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
 
 // External Authentication - Google
 builder.Services.AddAuthentication()

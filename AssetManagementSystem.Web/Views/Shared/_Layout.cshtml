@@ -189,6 +189,19 @@
                             </li>
                         }
 
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <!-- Supplier Menu -->
+                            <li class="nav-item @IsMenuOpen("supplier")">
+                                <a asp-controller="supplier" asp-action="Index" class="nav-link @IsLinkActive("supplier", "index")">
+                                    <i class="nav-icon fas fa-truck"></i>
+                                    <p>
+                                        Supplier
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
                         @if (User.IsInRole("Admin"))
                         {
                             <!-- Adminstration Menu -->

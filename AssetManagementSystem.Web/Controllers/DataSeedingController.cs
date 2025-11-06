@@ -26,5 +26,12 @@ namespace AssetManagementSystem.Web.Controllers
             await AssetSeeder.SeedAssetsAsync(_services);
             return Ok("Dummy assets have been seeded successfully.");
         }
+
+        [HttpPost("seed-dummy-suppliers")]
+        public async Task<IActionResult> SeedDummySuppliers()
+        {
+            await SupplierSeeder.SeedSuppliersAsync(_services);
+            return Ok("Dummy suppliers have been seeded successfully.");
+        }
     }
 }

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AssetManagementSystem.Core\AssetManagementSystem.Core.csproj" />
     <ProjectReference Include="..\AssetManagementSystem.Db\AssetManagementSystem.Db.csproj" />
   </ItemGroup>
 

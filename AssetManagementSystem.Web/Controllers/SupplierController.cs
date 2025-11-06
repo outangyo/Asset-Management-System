@@ -18,141 +18,90 @@ namespace AssetManagementSystem.Web.Controllers
             _supplierService = supplierService;
         }
 
-        // --- 1. GET: /Supplier (หน้า List) ---
+        // GET: /Supplier (หน้า List) ---
+        [HttpGet]
         public async Task<IActionResult> Index([FromQuery] SupplierListFilterViewModel filter)
         {
             var viewModel = await _supplierService.GetSuppliersAsync(filter);
             return View(viewModel);
         }
 
-        // --- 2. GET: /Supplier/Details/guid-xxxx ---
-        //public async Task<IActionResult> Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: /Supplier/Details/guid-xxxx
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound(); // ถ้าไม่มี id ส่งมา
+            }
 
-        //    // (ในอนาคตคุณอาจจะอยากใช้ Include ที่นี่ แต่ตอนนี้ GetById ก็พอ)
-        //    var supplier = await _supplierService.GetByIdAsync(id.Value);
-        //    if (supplier == null)
-        //    {
-        //        return NotFound();
-        //    }
+            // 1. "ผู้จัดการสาขา" (Controller) สั่ง "ผู้จัดการแผนก" (Service)
+            var viewModel = await _supplierService.GetDetailsAsync(id.Value);
 
-        //    return View(supplier);
-        //}
+            // 2. Service คืนค่ามาว่า "ไม่เจอ"
+            if (viewModel == null)
+            {
+                return NotFound(); // ถ้าหา Supplier ไม่เจอ
+            }
 
-        //// --- 3. GET: /Supplier/Create (แสดงฟอร์มเปล่า) ---
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+            // 3. ส่ง ViewModel ไปที่หน้า View
+            return View(viewModel);
+        }
 
-        //// --- 4. POST: /Supplier/Create (รับค่าจากฟอร์ม) ---
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,SupplierCode,Name,ContactName,ContactEmail,ContactPhone,WebsiteURL,TaxId,IsActive,Notes")] Supplier supplier)
-        //{
-        //    // (เราใช้ [Bind] เพื่อป้องกัน Overposting)
-        //    // (ในชีวิตจริงควรใช้ ViewModel)
+        // ---  GET: /Supplier/Edit/guid-xxxx ---
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    // สร้าง Id ใหม่และตั้งค่าเริ่มต้น
-        //    supplier.Id = Guid.NewGuid();
-        //    supplier.DateAdded = DateTime.UtcNow;
+            // "ผู้จัดการสาขา" (Controller) สั่ง Service ไปเอาข้อมูลมา
+            var viewModel = await _supplierService.GetForEditAsync(id.Value);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _supplierRepo.CreateAsync(supplier);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
 
-        //    // ถ้า Model ไม่ Valid ก็กลับไปหน้าเดิมพร้อมข้อมูลที่กรอกมา
-        //    return View(supplier);
-        //}
+            // ส่ง ViewModel (ที่มีข้อมูล) ไปให้หน้า View
+            return View(viewModel);
+        }
 
-        //// --- 5. GET: /Supplier/Edit/guid-xxxx (แสดงฟอร์มที่มีข้อมูลเดิม) ---
-        //public async Task<IActionResult> Edit(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // --- POST: /Supplier/Edit/guid-xxxx ---
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, SupplierEditViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
 
-        //    var supplier = await _supplierRepo.GetByIdAsync(id.Value);
-        //    if (supplier == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(supplier);
-        //}
+            // ตรวจสอบว่าข้อมูลที่ส่งมา (เช่น [Required]) ถูกต้องหรือไม่
+            if (ModelState.IsValid)
+            {
+                // "ผู้จัดการสาขา" (Controller) สั่ง Service ให้ไป Save
+                var result = await _supplierService.UpdateAsync(model);
 
-        //// --- 6. POST: /Supplier/Edit/guid-xxxx (รับค่าจากฟอร์มที่แก้ไข) ---
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(Guid id, [Bind("Id,SupplierCode,Name,ContactName,ContactEmail,ContactPhone,WebsiteURL,TaxId,IsActive,DateAdded,Notes")] Supplier supplier)
-        //{
-        //    if (id != supplier.Id)
-        //    {
-        //        return NotFound();
-        //    }
+                if (result.Succeeded)
+                {
+                    // ถ้าสำเร็จ ให้กลับไปหน้า Index
+                    return RedirectToAction(nameof(Index));
+                }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _supplierRepo.Update(supplier); // "ปักธง" ว่าจะ Update
-        //            await _context.SaveChangesAsync(); // "กด Save"
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            // (จัดการ Error ถ้ามีคนแก้ข้อมูลนี้พร้อมกัน)
-        //            var exists = await _supplierRepo.GetByIdAsync(id);
-        //            if (exists == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(supplier);
-        //}
+                // ถ้าไม่สำเร็จ (เช่น Error จาก Service)
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
 
-        //// --- 7. GET: /Supplier/Delete/guid-xxxx (แสดงหน้ายืนยันการลบ) ---
-        //public async Task<IActionResult> Delete(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            // ถ้า ModelState ไม่ Valid (กรอกไม่ครบ) หรือ Save ไม่สำเร็จ
+            // ให้กลับไปหน้า Edit ฟอร์มเดิม พร้อมข้อมูลที่กรอกมา
+            return View(model);
+        }
 
-        //    var supplier = await _supplierRepo.GetByIdAsync(id.Value);
-        //    if (supplier == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(supplier); // ส่ง Model ไปให้ View "Delete.cshtml"
-        //}
-
-        //// --- 8. POST: /Supplier/Delete/guid-xxxx (ยืนยันการลบจริง) ---
-        //[HttpPost, ActionName("Delete")] // ActionName("Delete") เพื่อให้ URL ตรงกัน
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(Guid id)
-        //{
-        //    var supplierToDelete = await _supplierRepo.GetByIdAsync(id);
-        //    if (supplierToDelete != null)
-        //    {
-        //        _supplierRepo.Delete(supplierToDelete); // "ปักธง" ว่าจะ Delete
-        //        await _context.SaveChangesAsync(); // "กด Save"
-        //    }
-
-        //    return RedirectToAction(nameof(Index));
-        //}
     }
 }

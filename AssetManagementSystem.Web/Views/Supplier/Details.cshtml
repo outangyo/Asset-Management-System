@@ -1,0 +1,76 @@
+﻿@using AssetManagementSystem.Web.ViewModels.Suppliers
+@model SupplierDetailsViewModel
+
+@{
+    ViewData["Title"] = "Supplier Details";
+}
+
+<div class="container">
+    <div class="mb-4">
+        <h1 class="h3 fw-bold text-primary mb-1">@Model.Name</h1>
+        <p class="text-muted mb-0">Details for Supplier Code: @Model.SupplierCode</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Supplier Information</h5>
+        </div>
+        <div class="card-body ">
+            <dl class="row ">
+                <dt class="col-sm-3 pb-2 mb-2">Supplier Name</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.Name</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Supplier Code</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.SupplierCode</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Contact Name</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@(Model.ContactName ?? "N/A")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Contact Email</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@(Model.ContactEmail ?? "N/A")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Contact Phone</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@(Model.ContactPhone ?? "N/A")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Status</dt>
+                <dd class="col-sm-9 pb-2 mb-2">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Date Added</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@Model.DateAdded.ToString("D")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Tax ID</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@(Model.TaxId ?? "N/A")</dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Website</dt>
+                <dd class="col-sm-9 pb-2 mb-2">
+                    @if (!string.IsNullOrEmpty(Model.WebsiteURL))
+                    {
+                        <a href="@Model.WebsiteURL" target="_blank">@Model.WebsiteURL</a>
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 pb-2 mb-2">Notes</dt>
+                <dd class="col-sm-9 pb-2 ">@(Model.Notes ?? "N/A")</dd>
+            </dl>
+
+            <div style="justify-content: center; display: flex; gap: 5px;">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">Back to List</a>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -3,6 +3,7 @@ using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.ViewModels.Shared;
 using AssetManagementSystem.Web.ViewModels.Suppliers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssetManagementSystem.Web.Services
@@ -79,6 +80,103 @@ namespace AssetManagementSystem.Web.Services
             };
 
             return viewModel;
+        }
+
+        public async Task<SupplierDetailsViewModel?> GetDetailsAsync(Guid id)
+        {
+            var supplier = await _supplierRepo.GetByIdAsync(id);
+
+            if (supplier == null)
+            {
+                return null;
+            }
+
+            var viewModel = new SupplierDetailsViewModel
+            {
+                Id = supplier.Id,
+                SupplierCode = supplier.SupplierCode,
+                Name = supplier.Name,
+                ContactName = supplier.ContactName,
+                ContactEmail = supplier.ContactEmail,
+                ContactPhone = supplier.ContactPhone,
+                WebsiteURL = supplier.WebsiteURL,
+                TaxId = supplier.TaxId,
+                IsActive = supplier.IsActive,
+                DateAdded = supplier.DateAdded,
+                Notes = supplier.Notes
+            };
+
+            return viewModel;
+        }
+
+        // (ใช้ Generic Repo)
+        public async Task<SupplierEditViewModel?> GetForEditAsync(Guid id)
+        {
+            // 1. "คนงาน" (Repo) ไปหาของ
+            var supplier = await _supplierRepo.GetByIdAsync(id);
+
+            if (supplier == null)
+            {
+                return null;
+            }
+
+            // 2. "ผู้จัดการ" (Service) แปลง Entity เป็น EditViewModel
+            var viewModel = new SupplierEditViewModel
+            {
+                Id = supplier.Id,
+                SupplierCode = supplier.SupplierCode,
+                Name = supplier.Name,
+                ContactName = supplier.ContactName,
+                ContactEmail = supplier.ContactEmail,
+                ContactPhone = supplier.ContactPhone,
+                WebsiteURL = supplier.WebsiteURL,
+                TaxId = supplier.TaxId,
+                IsActive = supplier.IsActive,
+                DateAdded = supplier.DateAdded, // (สำคัญมาก ต้องส่งค่าเดิมกลับไป)
+                Notes = supplier.Notes
+            };
+
+            return viewModel;
+        }
+
+        // POST Edit (ใช้ Generic Repo) ---
+        public async Task<IdentityResult> UpdateAsync(SupplierEditViewModel model)
+        {
+            // 1. "คนงาน" (Repo) ไปดึง Entity *ตัวเต็ม* จากฐานข้อมูล
+            var supplierToUpdate = await _supplierRepo.GetByIdAsync(model.Id);
+
+            if (supplierToUpdate == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Supplier not found." });
+            }
+
+            // 2. "ผู้จัดการ" (Service) เอาค่าจาก ViewModel ไป "ทับ" Entity
+            supplierToUpdate.SupplierCode = model.SupplierCode;
+            supplierToUpdate.Name = model.Name;
+            supplierToUpdate.ContactName = model.ContactName;
+            supplierToUpdate.ContactEmail = model.ContactEmail;
+            supplierToUpdate.ContactPhone = model.ContactPhone;
+            supplierToUpdate.WebsiteURL = model.WebsiteURL;
+            supplierToUpdate.TaxId = model.TaxId;
+            supplierToUpdate.IsActive = model.IsActive;
+            supplierToUpdate.Notes = model.Notes;
+            // (เราไม่แตะ DateAdded เพราะมันคือค่าเดิม)
+
+            try
+            {
+                // 3. "คนงาน" (Repo) "ปักธง" ว่าจะ Update
+                _supplierRepo.Update(supplierToUpdate);
+
+                // 4. "Service" กด "ปุ่ม Save"
+                await _context.SaveChangesAsync();
+
+                return IdentityResult.Success;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // (จัดการ Error ถ้ามีคนแก้พร้อมกัน)
+                return IdentityResult.Failed(new IdentityError { Description = "Failed to update supplier. Please try again." });
+            }
         }
 
     }

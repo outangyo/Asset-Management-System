@@ -1,0 +1,99 @@
+﻿@using AssetManagementSystem.Web.ViewModels.Suppliers
+@model SupplierCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Supplier";
+}
+
+<div class="container">
+    <div class="gap-2 mb-4 pb-2 border-bottom">
+        <h1 class="h3 fw-bold text-primary mb-1">Add New Supplier</h1>
+        <p class="text-muted mb-0">Fill in the details below to add a new supplier to the system.</p>
+    </div>
+
+    <form asp-action="Create" method="post" novalidate>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="SupplierCode" class="form-label fw-semibold"></label>
+                                <input asp-for="SupplierCode" class="form-control" placeholder="e.g., SUP-DELL, SUP-IKEA" />
+                                <span asp-validation-for="SupplierCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Name" class="form-label fw-semibold"></label>
+                                <input asp-for="Name" class="form-control" placeholder="e.g., Dell Technologies Inc." />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label asp-for="ContactName" class="form-label fw-semibold"></label>
+                                <input asp-for="ContactName" class="form-control" placeholder="e.g., John Smith" />
+                                <span asp-validation-for="ContactName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 col-md-4">
+                                <label asp-for="ContactEmail" class="form-label fw-semibold"></label>
+                                <input asp-for="ContactEmail" type="email" class="form-control" placeholder="e.g., sales@dell.com" />
+                                <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 col-md-4">
+                                <label asp-for="ContactPhone" class="form-label fw-semibold"></label>
+                                <input asp-for="ContactPhone" type="tel" class="form-control" placeholder="e.g., 1-800-BUY-DELL" />
+                                <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="WebsiteURL" class="form-label fw-semibold"></label>
+                                <input asp-for="WebsiteURL" class="form-control" placeholder="e.g., https://www.dell.com" />
+                                <span asp-validation-for="WebsiteURL" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="TaxId" class="form-label fw-semibold"></label>
+                                <input asp-for="TaxId" class="form-control" placeholder="e.g., DELL-12345" />
+                                <span asp-validation-for="TaxId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Notes" rows="3" class="form-control" placeholder="Any additional notes or comments"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col-md-6 d-flex align-items-center">
+                                <div class="form-check form-switch mt-3">
+                                    <input asp-for="IsActive" class="form-check-input" />
+                                    <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-primary" type="submit">Create Supplier</button>
+                            <button class="btn btn-dark" type="reset">Reset</button>
+                            <a asp-action="Index" class="btn btn-info">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

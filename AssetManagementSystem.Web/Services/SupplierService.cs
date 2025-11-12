@@ -179,5 +179,72 @@ namespace AssetManagementSystem.Web.Services
             }
         }
 
+        public async Task<IdentityResult> DeleteAsync(Guid id)
+        {
+            // 1. "คนงาน" (Repo) ไปหาของที่จะลบ
+            var supplierToDelete = await _supplierRepo.GetByIdAsync(id);
+
+            if (supplierToDelete == null)
+            {
+                // ไม่เจออะไรให้ลบ
+                return IdentityResult.Failed(new IdentityError { Description = "Supplier not found." });
+            }
+
+            try
+            {
+                // 2. "คนงาน" (Repo) "ปักธง" ว่าจะ Delete
+                _supplierRepo.Delete(supplierToDelete);
+
+                // 3. "Service" กด "ปุ่ม Save"
+                await _context.SaveChangesAsync();
+
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                // (เผื่อมี Error ตอน Save เช่น มี Asset ผูกอยู่)
+                return IdentityResult.Failed(new IdentityError { Description = $"Error deleting supplier: {ex.Message}" });
+            }
+        }
+
+        // --- (ใช้ Generic Repo) ---
+        public async Task<(IdentityResult result, Guid newId)> CreateAsync(SupplierCreateViewModel model)
+        {
+            // 1. "ผู้จัดการ" (Service) แปลง ViewModel เป็น Entity
+            var newSupplier = new Supplier
+            {
+                // 2. ตั้งค่า Server-side
+                Id = Guid.NewGuid(),
+                DateAdded = DateTime.UtcNow,
+
+                // 3. แมพค่าจากฟอร์ม
+                SupplierCode = model.SupplierCode,
+                Name = model.Name,
+                ContactName = model.ContactName,
+                ContactEmail = model.ContactEmail,
+                ContactPhone = model.ContactPhone,
+                WebsiteURL = model.WebsiteURL,
+                TaxId = model.TaxId,
+                IsActive = model.IsActive,
+                Notes = model.Notes
+            };
+
+            try
+            {
+                // 4. "คนงาน" (Repo) "เตรียมสร้าง"
+                await _supplierRepo.CreateAsync(newSupplier);
+
+                // 5. "Service" กด "ปุ่ม Save"
+                await _context.SaveChangesAsync();
+
+                return (IdentityResult.Success, newSupplier.Id);
+            }
+            catch (Exception ex)
+            {
+                // (เผื่อ Error ตอน Save)
+                return (IdentityResult.Failed(new IdentityError { Description = ex.Message }), Guid.Empty);
+            }
+        }
+
     }
 }

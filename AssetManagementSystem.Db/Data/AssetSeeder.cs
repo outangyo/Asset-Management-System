@@ -25,10 +25,6 @@ namespace AssetManagementSystem.Db.Data
                 return;
             }
 
-            // ==========================================
-            // PHASE 1: Seed Master Data (Category, Dept, Location)
-            // ==========================================
-
             // --- 3. Seed Categories ---
             if (!await context.Categories.AnyAsync())
             {
@@ -38,7 +34,8 @@ namespace AssetManagementSystem.Db.Data
                     new Category { Name = "Furniture", Description = "Desks, Chairs" },
                     new Category { Name = "Vehicle", Description = "Cars, Vans" },
                     new Category { Name = "Office Equipment", Description = "Projectors, etc." },
-                    new Category { Name = "Media", Description = "Cameras, Audio" }
+                    new Category { Name = "Media", Description = "Cameras, Audio" },
+                    new Category { Name = "Tools", Description = "Screwdriver, Hammer" }
                 };
                 await context.Categories.AddRangeAsync(categories);
             }
@@ -55,7 +52,7 @@ namespace AssetManagementSystem.Db.Data
                     new Department { Name = "Storage", Code = "STR" },
                     new Department { Name = "Sales", Code = "SLE" },
                     new Department { Name = "Logistics", Code = "LOG" },
-                    new Department { Name = "Meeting Room 1", Code = "MR1" } // หรือจะมองเป็นแผนกกลาง
+                    new Department { Name = "Meeting Room 1", Code = "MR1" }
                 };
                 await context.Departments.AddRangeAsync(departments);
             }
@@ -65,10 +62,10 @@ namespace AssetManagementSystem.Db.Data
             {
                 var locations = new List<Location>
                 {
-                    new Location { Name = "Building A, Floor 2" },
-                    new Location { Name = "Building A, Floor 3" },
                     new Location { Name = "Building A, Floor 1" },
+                    new Location { Name = "Building A, Floor 2" },
                     new Location { Name = "Building B, Floor 1" },
+                    new Location { Name = "Building B, Floor 2" },
                     new Location { Name = "Common Area" },
                     new Location { Name = "IT Storage Room" },
                     new Location { Name = "Parking Lot A" },
@@ -82,18 +79,10 @@ namespace AssetManagementSystem.Db.Data
             // *** สำคัญ: ต้อง Save ก่อน เพื่อให้ได้ ID ของ Master Data มาใช้ ***
             await context.SaveChangesAsync();
 
-            // ==========================================
-            // PHASE 2: Load Master Data to Memory (เพื่อเอา ID)
-            // ==========================================
-
             // ดึงข้อมูลกลับมาใส่ Dictionary เพื่อให้ค้นหา ID ได้ง่ายๆ จากชื่อ
             var cats = await context.Categories.ToDictionaryAsync(c => c.Name, c => c.Id);
             var depts = await context.Departments.ToDictionaryAsync(d => d.Name, d => d.Id);
             var locs = await context.Locations.ToDictionaryAsync(l => l.Name, l => l.Id);
-
-            // ==========================================
-            // PHASE 3: Seed Assets (เชื่อมโยง ID)
-            // ==========================================
 
             var assets = new List<Asset>
             {
@@ -113,7 +102,7 @@ namespace AssetManagementSystem.Db.Data
                 new Asset
                 {
                     Id = Guid.NewGuid(), Code = "KB-LOGI-01", Name = "Logitech MX Keys Keyboard",
-                    CategoryId = cats["IT"], DepartmentId = depts["Development"], LocationId = locs["Building A, Floor 3"],
+                    CategoryId = cats["IT"], DepartmentId = depts["Development"], LocationId = locs["Building B, Floor 1"],
                     DateRegister = DateTime.UtcNow.AddMonths(-2), IsActive = true, UserId = adminUser.Id
                 },
 
@@ -127,7 +116,7 @@ namespace AssetManagementSystem.Db.Data
                 new Asset
                 {
                     Id = Guid.NewGuid(), Code = "DSK-STD-01", Name = "Standing Desk, Electric",
-                    CategoryId = cats["Furniture"], DepartmentId = depts["Development"], LocationId = locs["Building A, Floor 3"],
+                    CategoryId = cats["Furniture"], DepartmentId = depts["Development"], LocationId = locs["Building B, Floor 2"],
                     DateRegister = DateTime.UtcNow.AddMonths(-10), IsActive = true, UserId = adminUser.Id
                 },
 
@@ -137,6 +126,12 @@ namespace AssetManagementSystem.Db.Data
                     Id = Guid.NewGuid(), Code = "VEH-TOY-01", Name = "Toyota Camry 2022",
                     CategoryId = cats["Vehicle"], DepartmentId = depts["Sales"], LocationId = locs["Parking Lot A"],
                     DateRegister = DateTime.UtcNow.AddYears(-1), IsActive = true, UserId = adminUser.Id
+                },
+                new Asset
+                {
+                    Id = Guid.NewGuid(), Code = "VEH-BMW-01", Name = "Bmw Zx3",
+                    CategoryId = cats["Vehicle"], DepartmentId = depts["Logistics"], LocationId = locs["Basement"],
+                    DateRegister = DateTime.UtcNow.AddYears(-5), IsActive = true, UserId = adminUser.Id
                 },
 
                 // --- Inactive / Broken ---

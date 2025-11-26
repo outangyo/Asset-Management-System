@@ -53,6 +53,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, MyUserClaimsPrincipalFactory>();
 builder.Services.AddScoped<IAssetService, AssetService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 // External Authentication - Google
 builder.Services.AddAuthentication()

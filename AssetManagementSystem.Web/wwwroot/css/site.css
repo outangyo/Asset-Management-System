@@ -57,3 +57,12 @@ body {
 .sidebar-collapsing .user-panel .info {
     opacity: 0;
 }
+
+.lift-on-hover {
+    transition: transform 0.2s ease-in-out;
+}
+
+    .lift-on-hover:hover {
+        transform: translateY(-5px);
+        cursor: pointer;
+    }

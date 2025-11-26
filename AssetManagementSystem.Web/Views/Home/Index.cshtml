@@ -1,8 +1,8 @@
-﻿@using AssetManagementSystem.Web.ViewModels.Users
-@model UserIndexViewModel
+﻿@using AssetManagementSystem.Web.ViewModels
+@model DashboardViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
 <div class="text-center">
@@ -10,128 +10,109 @@
     <p>Your solution for managing company assets efficiently.</p>
 </div>
 
-@* <div class="container border-0 mb-2">
-    <div class="card-body p-0">
-        <div>
-            <h1 class="text-primary">Assets Lists</h1>
-        </div>
-        <div class="table-responsive">
-            <table class="table align-middle mb-0">
-                <!-- Black/Dark header -->
-                <thead class="table-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th>Email Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!Model.PagedUsers.Items.Any())
-                    {
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-4">No users found.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        foreach (var u in Model.PagedUsers.Items)
-                        {
-                            <tr>
-                                <td>@($"{u.FirstName} {u.LastName}".Trim())</td>
-                                <td>@u.Email</td>
-                                <td>@u.PhoneNumber</td>
-                                <!-- Active / Inactive with colors -->
-                                <td>
-                                    @if (u.IsActive)
-                                    {
-                                        <span class="badge rounded-pill bg-success">Active</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge rounded-pill bg-danger">Inactive</span>
-                                    }
-                                </td>
-                                <!-- Email Confirmed / Unconfirmed with colors -->
-                                <td>
-                                    @if (u.EmailConfirmed)
-                                    {
-                                        <span class="badge rounded-pill bg-success">Confirmed</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge rounded-pill bg-warning text-dark">Unconfirmed</span>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard Overview</h1>
     </div>
-</div> *@
 
-<div class="container border-0 mb-2">
-    <div class="card-body p-0">
-        <div>
-            <h1 class="text-primary">Users Lists</h1>
+    <!-- All Card-->
+    <div class="row">
+        <!-- Assets Card-->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <a asp-controller="Asset" asp-action="Index" class="text-decoration-none ">
+                <div class="card border-left-primary shadow h-100 py-2 border-0 border-start border-4 border-primary lift-on-hover">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                    Total Assets
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalAssets</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-cubes fa-2x text-gray-300 text-primary opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
-        <div class="table-responsive">
-            <table class="table align-middle mb-0">
-                <!-- Black/Dark header -->
-                <thead class="table-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th>Email Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!Model.PagedUsers.Items.Any())
-                    {
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-4">No users found.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        foreach (var u in Model.PagedUsers.Items)
-                        {
-                            <tr>
-                                <td>@($"{u.FirstName} {u.LastName}".Trim())</td>
-                                <td>@u.Email</td>
-                                <td>@u.PhoneNumber</td>
-                                <!-- Active / Inactive with colors -->
-                                <td>
-                                    @if (u.IsActive)
-                                    {
-                                        <span class="badge rounded-pill bg-success">Active</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge rounded-pill bg-danger">Inactive</span>
-                                    }
-                                </td>
-                                <!-- Email Confirmed / Unconfirmed with colors -->
-                                <td>
-                                    @if (u.EmailConfirmed)
-                                    {
-                                        <span class="badge rounded-pill bg-success">Confirmed</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge rounded-pill bg-warning text-dark">Unconfirmed</span>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+
+        <!-- Suppliers Card-->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <a asp-controller="Supplier" asp-action="Index" class="text-decoration-none">
+                <div class="card border-left-success shadow h-100 py-2 border-0 border-start border-4 border-success lift-on-hover">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                    Total Suppliers
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalSuppliers</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-truck fa-2x text-gray-300 text-success opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
+
+        <!-- Users Card-->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
+                <div class="card border-left-info shadow h-100 py-2 border-0 border-start border-4 border-info lift-on-hover">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs fw-bold text-info text-uppercase mb-1">
+                                    Total Users
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalUsers</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300 text-info opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Roles Card-->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <a asp-controller="Roles" asp-action="Index" class="text-decoration-none">
+                <div class="card border-left-warning shadow h-100 py-2 border-0 border-start border-4 border-warning lift-on-hover">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                    Total Roles
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalRoles</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user-shield fa-2x text-gray-300 text-warning opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 fw-bold text-primary">System Status</h6>
+                    </div>
+                    <div class="card-body">
+                        <p>Welcome back! Here is the quick summary of your Asset Management System.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

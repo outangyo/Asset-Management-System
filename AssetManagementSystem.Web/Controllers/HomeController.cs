@@ -12,31 +12,22 @@ namespace AssetManagementSystem.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
+        private readonly IDashboardService _dashboardService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, IDashboardService dashboardService)
         {
             _logger = logger;
             _userService = userService;
+            _dashboardService = dashboardService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] UserListFilterViewModel filter)
+        public async Task<IActionResult> Index()
         {
-            try
-            {
-                var pagedUsers = await _userService.GetUsersAsync(filter);
-                var model = new UserIndexViewModel
-                {
-                    PagedUsers = pagedUsers,
-                    Filter = filter
-                };
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching users for the dashboard.");
-                return View("Error");
-            }
+            // เรียกข้อมูลตัวเลขทั้งหมดมา
+            var viewModel = await _dashboardService.GetDashboardDataAsync();
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

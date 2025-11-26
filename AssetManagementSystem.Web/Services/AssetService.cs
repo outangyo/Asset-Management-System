@@ -1,4 +1,6 @@
-﻿using AssetManagementSystem.Db.Data;
+﻿using AssetManagementSystem.Core.Repositories;
+using AssetManagementSystem.Db;
+using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.ViewModels.Assets;
 using AssetManagementSystem.Web.ViewModels.Shared;
@@ -9,30 +11,36 @@ namespace AssetManagementSystem.Web.Services
 {
     public class AssetService : IAssetService
     {
-
         private readonly ApplicationDbContext _context;
+        private readonly IRepository<Asset> _assetRepo; // 1. เพิ่ม Repo
 
-        public AssetService(ApplicationDbContext context)
+        public AssetService(ApplicationDbContext context, IRepository<Asset> assetRepo)
         {
             _context = context;
+            _assetRepo = assetRepo;
         }
 
+        // --- 1. Get All (ซับซ้อน -> ใช้ DbContext ตรงๆ) ---
         public async Task<PagedResult<AssetListItemViewModel>> GetAssetsAsync(AssetListFilterViewModel filter)
         {
-            var query = _context.Assets.AsNoTracking();
+            // ต้อง Include ตารางลูก เพื่อให้ Search ชื่อเจอ และเอาชื่อไปแสดง
+            var query = _context.Assets
+                .Include(a => a.Category)
+                .Include(a => a.Department)
+                .Include(a => a.Location)
+                .AsNoTracking();
 
-            // Filter for search
+            // Filter Search (ค้นหาจากชื่อในตารางลูก)
             if (!string.IsNullOrWhiteSpace(filter.Search))
             {
                 var searchTerm = filter.Search.Trim();
                 query = query.Where(a => a.Name.Contains(searchTerm)
-                                      || a.Category.Contains(searchTerm)
                                       || a.Code.Contains(searchTerm)
-                                      || a.Department.Contains(searchTerm)
-                                      || a.Location.Contains(searchTerm));
+                                      || a.Category.Name.Contains(searchTerm)    // ค้นหาจาก Category Name
+                                      || a.Department.Name.Contains(searchTerm)  // ค้นหาจาก Department Name
+                                      || a.Location.Name.Contains(searchTerm));  // ค้นหาจาก Location Name
             }
 
-            // Filter by Status (IsActive) ---
             if (filter.IsActive.HasValue)
             {
                 query = query.Where(a => a.IsActive == filter.IsActive.Value);
@@ -49,9 +57,10 @@ namespace AssetManagementSystem.Web.Services
                     Id = a.Id,
                     Code = a.Code,
                     Name = a.Name,
-                    Category = a.Category,
-                    Department = a.Department,
-                    Location = a.Location,
+                    // Map ชื่อจากตารางลูกมาใส่ ViewModel
+                    Category = a.Category.Name,
+                    Department = a.Department.Name,
+                    Location = a.Location.Name,
                     DateRegister = a.DateRegister,
                     IsActive = a.IsActive
                 })
@@ -66,135 +75,152 @@ namespace AssetManagementSystem.Web.Services
             };
         }
 
+        // --- 2. Create (ง่าย -> ใช้ Generic Repo) ---
         public async Task<(IdentityResult result, Guid id)> CreateAsync(AssetCreateViewModel model, Guid userId)
         {
-            // สร้าง Entity ใหม่จาก ViewModel
             var asset = new Asset
             {
-                Id = Guid.NewGuid(), // สร้าง Guid ใหม่
+                Id = Guid.NewGuid(),
                 Code = model.Code,
                 Name = model.Name,
                 Description = model.Description,
-                Category = model.Category,
-                Department = model.Department,
-                Location = model.Location,
+
+                // บันทึกเป็น ID (Guid) แทน String
+                CategoryId = model.CategoryId,     // ต้องแก้ ViewModel เป็น Guid
+                DepartmentId = model.DepartmentId, // ต้องแก้ ViewModel เป็น Guid
+                LocationId = model.LocationId,     // ต้องแก้ ViewModel เป็น Guid
+
                 Note = model.Note,
                 DateRegister = model.DateRegister,
                 IsActive = model.IsActive,
-                UserId = userId // บันทึกว่าใครเป็นคนสร้าง
+                UserId = userId
             };
 
-            // เพิ่มลงใน DbContext
-            _context.Assets.Add(asset);
-
-            // บันทึกการเปลี่ยนแปลงลงฐานข้อมูล
-            var saved = await _context.SaveChangesAsync();
-
-            // ตรวจสอบว่าบันทึกสำเร็จหรือไม่
-            if (saved > 0)
+            try
             {
-                // ถ้าสำเร็จ คืนค่า Success และ Id ของ Asset ใหม่
+                // ใช้ Repo
+                await _assetRepo.CreateAsync(asset);
+                await _context.SaveChangesAsync();
+
                 return (IdentityResult.Success, asset.Id);
             }
-            else
+            catch (Exception ex)
             {
-                // ถ้าล้มเหลว คืนค่า Failed
-                return (IdentityResult.Failed(new IdentityError { Description = "Could not save asset to the database." }), Guid.Empty);
+                return (IdentityResult.Failed(new IdentityError { Description = ex.Message }), Guid.Empty);
             }
         }
 
+        // --- 3. Details (ซับซ้อนเพราะต้อง Include ชื่อ -> ใช้ DbContext) ---
         public async Task<AssetDetailsViewModel?> GetDetailsAsync(Guid id)
         {
+            // เราไม่ใช้ _assetRepo.GetByIdAsync() เพราะมันไม่ Include ชื่อมาให้
             var asset = await _context.Assets
-                .Include(a => a.User) // <-- ใช้ .Include() เพื่อดึงข้อมูล User ที่เกี่ยวข้องมาพร้อมกัน
+                .Include(a => a.User)
+                .Include(a => a.Category)    // Include เพิ่ม
+                .Include(a => a.Department)  // Include เพิ่ม
+                .Include(a => a.Location)    // Include เพิ่ม
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (asset == null)
-            {
-                return null; // ถ้าหา Asset ไม่เจอ
-            }
+            if (asset == null) return null;
 
-            // แปลง Entity เป็น ViewModel
             return new AssetDetailsViewModel
             {
                 Id = asset.Id,
                 Code = asset.Code,
                 Name = asset.Name,
                 Description = asset.Description,
-                Category = asset.Category,
-                Department = asset.Department,
-                Location = asset.Location,
+
+                // แสดงเป็นชื่อ
+                Category = asset.Category.Name,
+                Department = asset.Department.Name,
+                Location = asset.Location.Name,
+
                 Note = asset.Note,
                 DateRegister = asset.DateRegister,
                 IsActive = asset.IsActive,
-                // ดึงชื่อ User มาจาก Navigation Property
                 CreatedByUserName = asset.User?.UserName
             };
         }
 
-        // เมธอดสำหรับดึงข้อมูลมาแสดงในฟอร์ม Edit
+        // --- 4. Get For Edit (ง่าย -> ใช้ Repo ได้) ---
         public async Task<AssetEditViewModel?> GetForEditAsync(Guid id)
         {
-            var asset = await _context.Assets
-                .AsNoTracking()
-                .FirstOrDefaultAsync(a => a.Id == id);
+            // ใช้ Repo ดึงข้อมูลดิบ (เราต้องการ ID ไป bind ลง Dropdown ไม่ใช่ชื่อ)
+            var asset = await _assetRepo.GetByIdAsync(id);
 
-            if (asset == null)
-            {
-                return null;
-            }
+            if (asset == null) return null;
 
-            // Map Entity เป็น EditViewModel
             return new AssetEditViewModel
             {
                 Id = asset.Id,
                 Code = asset.Code,
                 Name = asset.Name,
                 Description = asset.Description,
-                Category = asset.Category,
-                Department = asset.Department,
-                Location = asset.Location,
+
+                // ส่ง ID กลับไปเพื่อให้ Dropdown เลือกค่าเดิมถูก
+                CategoryId = asset.CategoryId,
+                DepartmentId = asset.DepartmentId,
+                LocationId = asset.LocationId,
+
                 Note = asset.Note,
                 DateRegister = asset.DateRegister,
                 IsActive = asset.IsActive
             };
         }
 
-        // เมธอดสำหรับบันทึกข้อมูลที่แก้ไข
+        // --- 5. Update (ง่าย -> ใช้ Repo) ---
         public async Task<IdentityResult> UpdateAsync(AssetEditViewModel model)
         {
-            var assetToUpdate = await _context.Assets.FindAsync(model.Id);
+            // ดึงข้อมูลตัวเต็มมาเพื่อแก้ไข
+            var assetToUpdate = await _assetRepo.GetByIdAsync(model.Id);
+
             if (assetToUpdate == null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "Asset not found." });
             }
 
-            // อัปเดตค่าจาก ViewModel ไปยัง Entity
+            // Update ค่า
             assetToUpdate.Code = model.Code;
             assetToUpdate.Name = model.Name;
             assetToUpdate.Description = model.Description;
-            assetToUpdate.Category = model.Category;
-            assetToUpdate.Department = model.Department;
-            assetToUpdate.Location = model.Location;
+
+            // เปลี่ยน ID (ย้ายหมวด/ย้ายแผนก)
+            assetToUpdate.CategoryId = model.CategoryId;
+            assetToUpdate.DepartmentId = model.DepartmentId;
+            assetToUpdate.LocationId = model.LocationId;
+
             assetToUpdate.Note = model.Note;
             assetToUpdate.DateRegister = model.DateRegister;
             assetToUpdate.IsActive = model.IsActive;
-            // ไม่ควรอัปเดต UserId หรือ CreatedDate
 
-            await _context.SaveChangesAsync();
-            return IdentityResult.Success;
+            try
+            {
+                // ใช้ Repo ปักธง Update
+                _assetRepo.Update(assetToUpdate);
+                await _context.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+            }
         }
+
+        // --- 6. Delete (ง่าย -> ใช้ Repo) ---
         public async Task<IdentityResult> DeleteAsync(Guid id)
         {
-            var assetToDelete = await _context.Assets.FindAsync(id);
+            var assetToDelete = await _assetRepo.GetByIdAsync(id);
+
             if (assetToDelete == null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "Asset not found." });
             }
 
-            _context.Assets.Remove(assetToDelete);
+            // ใช้ Repo ปักธง Delete
+            _assetRepo.Delete(assetToDelete);
             await _context.SaveChangesAsync();
+
             return IdentityResult.Success;
         }
     }

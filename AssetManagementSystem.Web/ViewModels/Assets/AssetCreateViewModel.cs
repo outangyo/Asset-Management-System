@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace AssetManagementSystem.Web.ViewModels.Assets
 {
@@ -15,17 +17,30 @@ namespace AssetManagementSystem.Web.ViewModels.Assets
         [StringLength(200)]
         public string? Description { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        public string Category { get; set; } = string.Empty;
+        // --- 1. Category (เปลี่ยนจาก string เป็น Guid) ---
+        [Required(ErrorMessage = "Please select a category")]
+        [Display(Name = "Category")]
+        public Guid CategoryId { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        public string Department { get; set; } = string.Empty;
+        // ตัวแปรสำหรับส่ง List ไปให้ Dropdown ในหน้า View
+        [ValidateNever] // บอกว่าไม่ต้อง Validate ตัว List นี้ตอน Submit Form
+        public IEnumerable<SelectListItem> Categories { get; set; } = Enumerable.Empty<SelectListItem>();
 
-        [Required]
-        [StringLength(20)]
-        public string Location { get; set; } = string.Empty;
+        // --- 2. Department (เปลี่ยนจาก string เป็น Guid) ---
+        [Required(ErrorMessage = "Please select a department")]
+        [Display(Name = "Department")]
+        public Guid DepartmentId { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Departments { get; set; } = Enumerable.Empty<SelectListItem>();
+
+        // --- 3. Location (เปลี่ยนจาก string เป็น Guid) ---
+        [Required(ErrorMessage = "Please select a location")]
+        [Display(Name = "Location")]
+        public Guid LocationId { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Locations { get; set; } = Enumerable.Empty<SelectListItem>();
 
         [StringLength(200)]
         public string? Note { get; set; }

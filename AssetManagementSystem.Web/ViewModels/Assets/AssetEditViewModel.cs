@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace AssetManagementSystem.Web.ViewModels.Assets
 {
@@ -18,17 +20,29 @@ namespace AssetManagementSystem.Web.ViewModels.Assets
         [StringLength(200)]
         public string? Description { get; set; }
 
+        // --- 1. Category ---
         [Required]
-        [StringLength(20)]
-        public string Category { get; set; } = string.Empty;
+        [Display(Name = "Category")]
+        public Guid CategoryId { get; set; } // เปลี่ยนเป็น Guid
 
-        [Required]
-        [StringLength(20)]
-        public string Department { get; set; } = string.Empty;
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Categories { get; set; } = Enumerable.Empty<SelectListItem>();
 
+        // --- 2. Department ---
         [Required]
-        [StringLength(20)]
-        public string Location { get; set; } = string.Empty;
+        [Display(Name = "Department")]
+        public Guid DepartmentId { get; set; } // เปลี่ยนเป็น Guid
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Departments { get; set; } = Enumerable.Empty<SelectListItem>();
+
+        // --- 3. Location ---
+        [Required]
+        [Display(Name = "Location")]
+        public Guid LocationId { get; set; } // เปลี่ยนเป็น Guid
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Locations { get; set; } = Enumerable.Empty<SelectListItem>();
 
         [StringLength(200)]
         public string? Note { get; set; }

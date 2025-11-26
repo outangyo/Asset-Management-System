@@ -1,9 +1,11 @@
-﻿using AssetManagementSystem.Db.Entities;
-using AssetManagementSystem.Web.ViewModels.Assets;
+﻿using AssetManagementSystem.Core.Repositories;
+using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.Services;
+using AssetManagementSystem.Web.ViewModels.Assets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AssetManagementSystem.Web.Controllers
 {
@@ -14,11 +16,20 @@ namespace AssetManagementSystem.Web.Controllers
         private readonly ILogger<AssetController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AssetController(IAssetService assetService, ILogger<AssetController> logger, UserManager<ApplicationUser> userManager)
+        private readonly IRepository<Category> _categoryRepo;
+        private readonly IRepository<Department> _departmentRepo;
+        private readonly IRepository<Location> _locationRepo;
+
+        public AssetController(IAssetService assetService, ILogger<AssetController> logger,
+            UserManager<ApplicationUser> userManager, IRepository<Category> categoryRepo, IRepository<Department> departmentRepo,
+        IRepository<Location> locationRepo)
         {
             _assetService = assetService;
             _logger = logger;
             _userManager = userManager;
+            _categoryRepo = categoryRepo;
+            _departmentRepo = departmentRepo;
+            _locationRepo = locationRepo;
         }
 
         [HttpGet]
@@ -45,10 +56,14 @@ namespace AssetManagementSystem.Web.Controllers
 
         // GET: /Asset/Create
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            // ส่ง ViewModel เปล่าๆ ไปให้ View เพื่อสร้างฟอร์ม
-            return View(new AssetCreateViewModel());
+            var model = new AssetCreateViewModel();
+
+            // --- เติมของใส่ Dropdown ก่อนส่งไป View ---
+            await PopulateDropdowns(model);
+
+            return View(model);
         }
 
         // POST: /Asset/Create
@@ -58,25 +73,23 @@ namespace AssetManagementSystem.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                // --- ถ้า Validation พลาด ต้องเติม Dropdown ใหม่ ไม่งั้นหน้าเว็บจะว่าง ---
+                await PopulateDropdowns(model);
                 return View(model);
             }
 
             try
             {
-                // ดึง UserId ของคนที่ล็อกอินอยู่
                 var userId = Guid.Parse(_userManager.GetUserId(User));
 
-                // เรียกใช้ Service เพื่อสร้าง Asset
                 var (result, id) = await _assetService.CreateAsync(model, userId);
 
                 if (result.Succeeded)
                 {
-                    // ตั้งค่า TempData เพื่อแสดงข้อความ "Success" ในหน้า Index
                     TempData["Success"] = $"Asset '{model.Name}' created successfully.";
                     return RedirectToAction(nameof(Index));
                 }
 
-                // ถ้า Service คืนค่า Error มา
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -88,6 +101,8 @@ namespace AssetManagementSystem.Web.Controllers
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred while creating the asset.");
             }
 
+            // --- ถ้า Save ไม่ผ่าน ก็ต้องเติม Dropdown ใหม่เหมือนกัน ---
+            await PopulateDropdowns(model);
             return View(model);
         }
 
@@ -118,7 +133,7 @@ namespace AssetManagementSystem.Web.Controllers
             }
         }
 
-        // GET: /Assets/Edit/{id}
+        // GET: /Assets/Edit/{Guid}
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -129,11 +144,17 @@ namespace AssetManagementSystem.Web.Controllers
 
             try
             {
+                // ดึงข้อมูล Asset เดิมมา (Service จะคืนค่า CategoryId, DeptId มาให้แล้ว)
                 var model = await _assetService.GetForEditAsync(id);
+
                 if (model == null)
                 {
                     return NotFound();
                 }
+
+                // [สำคัญ!] ต้องเติม Dropdown ก่อนส่งไป View ไม่งั้น Dropdown ว่าง
+                await PopulateDropdowns(model);
+
                 return View(model);
             }
             catch (Exception ex)
@@ -150,6 +171,9 @@ namespace AssetManagementSystem.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                // [สำคัญ!] ถ้า Validation ไม่ผ่าน (User กรอกผิด)
+                // ต้องเติม Dropdown ใหม่ก่อนส่งกลับไป ไม่งั้น Dropdown จะหายไปเลย
+                await PopulateDropdowns(model);
                 return View(model);
             }
 
@@ -173,6 +197,8 @@ namespace AssetManagementSystem.Web.Controllers
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred.");
             }
 
+            // [สำคัญ!] ถ้า Save ไม่ผ่าน (เช่น DB Error) ก็ต้องเติม Dropdown ด้วย
+            await PopulateDropdowns(model);
             return View(model);
         }
 
@@ -205,6 +231,31 @@ namespace AssetManagementSystem.Web.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        //Helpers Methods
+        private async Task PopulateDropdowns(AssetCreateViewModel model)
+        {
+            // 1. ดึงข้อมูลดิบจาก Repo
+            var categories = await _categoryRepo.GetAllAsync();
+            var departments = await _departmentRepo.GetAllAsync();
+            var locations = await _locationRepo.GetAllAsync();
+
+            // 2. แปลงเป็น SelectListItem ใส่ลงใน ViewModel
+            model.Categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
+            model.Departments = departments.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name });
+            model.Locations = locations.Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name });
+        }
+
+        private async Task PopulateDropdowns(AssetEditViewModel model)
+        {
+            var categories = await _categoryRepo.GetAllAsync();
+            var departments = await _departmentRepo.GetAllAsync();
+            var locations = await _locationRepo.GetAllAsync();
+
+            model.Categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
+            model.Departments = departments.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name });
+            model.Locations = locations.Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name });
         }
     }
 }

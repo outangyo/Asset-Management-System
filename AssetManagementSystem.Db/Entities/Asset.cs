@@ -20,16 +20,19 @@ namespace AssetManagementSystem.Db.Entities
         public string? Description { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Category { get; set; } = string.Empty;
+        public Guid CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public virtual Category Category { get; set; } = null!;
 
         [Required]
-        [MaxLength(100)]
-        public string Department { get; set; } = string.Empty;
+        public Guid DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
+        public virtual Department Department { get; set; } = null!;
 
         [Required]
-        [MaxLength(100)]
-        public string Location { get; set; } = string.Empty;
+        public Guid LocationId { get; set; }
+        [ForeignKey("LocationId")]
+        public virtual Location Location { get; set; } = null!;
 
         [MaxLength(500)]
         public string? Note { get; set; }

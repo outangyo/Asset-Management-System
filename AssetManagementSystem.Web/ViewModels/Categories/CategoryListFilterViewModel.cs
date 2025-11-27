@@ -1,8 +1,8 @@
 ﻿using AssetManagementSystem.Web.ViewModels.Common;
 
-namespace AssetManagementSystem.Web.ViewModels.Assets
+namespace AssetManagementSystem.Web.ViewModels.Categories
 {
-    public class AssetListFilterViewModel : BaseFilterViewModel
+    public class CategoryListFilterViewModel : BaseFilterViewModel
     {
         public string? Search { get; set; }
         public bool? IsActive { get; set; }

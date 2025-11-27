@@ -202,6 +202,44 @@
                             </li>
                         }
 
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <!-- System Menu -->
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-cogs"></i> <p>
+                                        System Setup
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <!-- Categories Menu -->
+                                    <li class="nav-item">
+                                        <a asp-controller="Category" asp-action="Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Categories</p>
+                                        </a>
+                                    </li>
+
+                                    <!-- Departments Menu -->
+                                    <li class="nav-item">
+                                        <a asp-controller="Department" asp-action="Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Departments</p>
+                                        </a>
+                                    </li>
+
+                                    <!-- Locations Menu -->
+                                    <li class="nav-item">
+                                        <a asp-controller="Location" asp-action="Index" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Locations</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
                         @if (User.IsInRole("Admin"))
                         {
                             <!-- Adminstration Menu -->
@@ -274,7 +312,7 @@
                         </li> *@
 
                         <!-- Secure Page Menu -->
-                       @*  <li class="nav-item">
+                        @*  <li class="nav-item">
                             <a class="nav-link @IsLinkActive("Home", "SecureMethod")" asp-controller="Home" asp-action="SecureMethod">
                                 <i class="nav-icon fas fa-lock"></i>
                                 <p>Secure Page</p>

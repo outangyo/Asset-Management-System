@@ -3,6 +3,7 @@ using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.Factories;
 using AssetManagementSystem.Web.Services;
+using AssetManagementSystem.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,6 +55,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, MyUserC
 builder.Services.AddScoped<IAssetService, AssetService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // External Authentication - Google
 builder.Services.AddAuthentication()

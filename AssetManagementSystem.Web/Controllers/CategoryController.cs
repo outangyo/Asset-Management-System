@@ -16,6 +16,7 @@ namespace AssetManagementSystem.Web.Controllers
         }
 
         // GET: Category
+        [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CategoryListFilterViewModel filter)
         {
             var model = await _categoryService.GetCategoriesAsync(filter);
@@ -23,6 +24,7 @@ namespace AssetManagementSystem.Web.Controllers
         }
 
         // GET: Category/Create
+        [HttpGet]
         public IActionResult Create()
         {
             return View(new CategoryCreateViewModel { IsActive = true });
@@ -47,6 +49,7 @@ namespace AssetManagementSystem.Web.Controllers
         }
 
         // GET: Category/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             var model = await _categoryService.GetForEditAsync(id);

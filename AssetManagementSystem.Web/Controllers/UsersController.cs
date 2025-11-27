@@ -1,11 +1,11 @@
 ﻿using AssetManagementSystem.Web.ViewModels.Users;
 using AssetManagementSystem.Web.ViewModels.Shared;
-using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AssetManagementSystem.Web.Services.Interfaces;
 
 namespace AssetManagementSystem.Web.Controllers
 {

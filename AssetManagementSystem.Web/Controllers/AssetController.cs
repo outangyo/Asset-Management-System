@@ -1,6 +1,6 @@
 ﻿using AssetManagementSystem.Core.Repositories;
 using AssetManagementSystem.Db.Entities;
-using AssetManagementSystem.Web.Services;
+using AssetManagementSystem.Web.Services.Interfaces;
 using AssetManagementSystem.Web.ViewModels.Assets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

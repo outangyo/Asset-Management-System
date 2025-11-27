@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Net;
+using AssetManagementSystem.Web.Services.Interfaces;
 
 namespace AssetManagementSystem.Web.Services
 {

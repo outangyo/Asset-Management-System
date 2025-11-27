@@ -2,7 +2,7 @@
 using AssetManagementSystem.Web.ViewModels.Shared;
 using Microsoft.AspNetCore.Identity;
 
-namespace AssetManagementSystem.Web.Services
+namespace AssetManagementSystem.Web.Services.Interfaces
 {
     public interface IAssetService
     {

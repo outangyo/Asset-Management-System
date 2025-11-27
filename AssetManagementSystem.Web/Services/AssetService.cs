@@ -2,6 +2,7 @@
 using AssetManagementSystem.Db;
 using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
+using AssetManagementSystem.Web.Services.Interfaces;
 using AssetManagementSystem.Web.ViewModels.Assets;
 using AssetManagementSystem.Web.ViewModels.Shared;
 using Microsoft.AspNetCore.Identity;

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using AssetManagementSystem.Web.ViewModels.Shared;
 
-namespace AssetManagementSystem.Web.Services
+namespace AssetManagementSystem.Web.Services.Interfaces
 {
     public interface IRoleService
     {

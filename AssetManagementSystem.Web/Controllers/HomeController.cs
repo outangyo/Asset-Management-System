@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
-using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using AssetManagementSystem.Web.ViewModels.Users;
 using AssetManagementSystem.Web.ViewModels.Home;
+using AssetManagementSystem.Web.Services.Interfaces;
 
 namespace AssetManagementSystem.Web.Controllers
 {

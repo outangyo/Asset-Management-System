@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace AssetManagementSystem.Web.Services
+namespace AssetManagementSystem.Web.Services.Interfaces
 {
     public interface IAccountService
     {

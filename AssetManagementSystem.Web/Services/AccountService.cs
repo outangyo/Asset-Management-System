@@ -1,4 +1,5 @@
 ﻿using AssetManagementSystem.Db.Entities;
+using AssetManagementSystem.Web.Services.Interfaces;
 using AssetManagementSystem.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

@@ -1,4 +1,5 @@
 ﻿using AssetManagementSystem.Db.Data;
+using AssetManagementSystem.Web.Services.Interfaces;
 using AssetManagementSystem.Web.ViewModels;
 
 using Microsoft.EntityFrameworkCore;

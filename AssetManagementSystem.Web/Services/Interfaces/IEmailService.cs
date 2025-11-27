@@ -1,4 +1,4 @@
-﻿namespace AssetManagementSystem.Web.Services
+﻿namespace AssetManagementSystem.Web.Services.Interfaces
 {
     public interface IEmailService
     {

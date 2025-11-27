@@ -1,10 +1,10 @@
 ﻿using AssetManagementSystem.Db.Data;
 using AssetManagementSystem.Db.Entities;
 using AssetManagementSystem.Web.ViewModels.Roles;
-using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AssetManagementSystem.Web.ViewModels.Shared;
+using AssetManagementSystem.Web.Services.Interfaces;
 
 namespace AssetManagementSystem.Web.Services
 {

@@ -1,7 +1,7 @@
 ﻿using AssetManagementSystem.Web.ViewModels.Roles;
-using AssetManagementSystem.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AssetManagementSystem.Web.Services.Interfaces;
 
 namespace AssetManagementSystem.Web.Controllers
 {

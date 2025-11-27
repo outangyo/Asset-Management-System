@@ -1,0 +1,55 @@
+﻿@using AssetManagementSystem.Web.ViewModels.Departments
+@model DepartmentCreateViewModel
+
+@{
+    ViewData["Title"] = "Edit Department";
+}
+
+<div class="container">
+    <div class="gap-2 mb-4 pb-2 border-bottom">
+        <h1 class="h3 fw-bold text-primary mb-1">Edit Department</h1>
+        <p class="text-muted mb-0">Update department details.</p>
+    </div>
+
+    <form asp-action="Edit" method="post" novalidate>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" placeholder="e.g., Human Resources" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Code" class="form-label fw-semibold"></label>
+                            <input asp-for="Code" class="form-control" placeholder="e.g., HR" />
+                            <span asp-validation-for="Code" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 d-flex align-items-center">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive" class="form-check-input" />
+                                <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

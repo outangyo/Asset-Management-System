@@ -56,6 +56,7 @@ builder.Services.AddScoped<IAssetService, AssetService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 // External Authentication - Google
 builder.Services.AddAuthentication()

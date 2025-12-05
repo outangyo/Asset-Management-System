@@ -20,5 +20,7 @@ namespace AssetManagementSystem.Web.ViewModels.Assets
         // ข้อมูลเพิ่มเติมที่ดึงมาจาก User ที่สร้าง Asset
         [Display(Name = "Created By")]
         public string? CreatedByUserName { get; set; }
+        [Display(Name = "Supplier")]
+        public string? SupplierName { get; set; } // เก็บชื่อ ไม่ใช่ ID
     }
 }

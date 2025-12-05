@@ -236,6 +236,7 @@ namespace AssetManagementSystem.Web.Controllers
         }
 
         //Helpers Methods
+        // For Create
         private async Task PopulateDropdowns(AssetCreateViewModel model)
         {
             // 1. ดึงข้อมูลดิบจาก Repo
@@ -251,15 +252,18 @@ namespace AssetManagementSystem.Web.Controllers
             model.Suppliers = suppliers.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name });
         }
 
+        // For Edit
         private async Task PopulateDropdowns(AssetEditViewModel model)
         {
             var categories = await _categoryRepo.GetAllAsync();
             var departments = await _departmentRepo.GetAllAsync();
             var locations = await _locationRepo.GetAllAsync();
+            var suppliers = await _supplierRepo.GetAllAsync();
 
             model.Categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
             model.Departments = departments.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name });
             model.Locations = locations.Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name });
+            model.Suppliers = suppliers.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name });
         }
     }
 }

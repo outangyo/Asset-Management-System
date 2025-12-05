@@ -15,6 +15,8 @@ namespace AssetManagementSystem.Web.ViewModels.Assets
         public string Category { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
+        [Display(Name = "Supplier")]
+        public string? SupplierName { get; set; }
 
         [Display(Name = "Registered Date")]
         public DateTime DateRegister { get; set; }

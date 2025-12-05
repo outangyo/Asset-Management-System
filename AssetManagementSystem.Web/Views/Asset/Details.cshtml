@@ -34,6 +34,9 @@
                 <dt class="col-sm-3 pb-2 mb-2">Location</dt>
                 <dd class="col-sm-9 pb-2 mb-2">@Model.Location</dd>
 
+                <dt class="col-sm-3 pb-2 mb-2">Supplier</dt>
+                <dd class="col-sm-9 pb-2 mb-2">@(Model.SupplierName ?? "-")</dd>
+
                 <dt class="col-sm-3 pb-2 mb-2">Status</dt>
                 <dd class="col-sm-9 pb-2 mb-2">
                     @if (Model.IsActive)

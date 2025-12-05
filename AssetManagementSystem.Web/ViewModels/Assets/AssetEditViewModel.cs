@@ -20,6 +20,13 @@ namespace AssetManagementSystem.Web.ViewModels.Assets
         [StringLength(200)]
         public string? Description { get; set; }
 
+        // --- Supplier ---
+        [Display(Name = "Supplier")]
+        public Guid? SupplierId { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Suppliers { get; set; } = Enumerable.Empty<SelectListItem>();
+
         // --- 1. Category ---
         [Required]
         [Display(Name = "Category")]

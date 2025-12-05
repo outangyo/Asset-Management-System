@@ -29,6 +29,7 @@ namespace AssetManagementSystem.Web.Services
                 .Include(a => a.Category)
                 .Include(a => a.Department)
                 .Include(a => a.Location)
+                .Include(a => a.Supplier)
                 .AsNoTracking();
 
             // Filter Search (ค้นหาจากชื่อในตารางลูก)
@@ -62,8 +63,9 @@ namespace AssetManagementSystem.Web.Services
                     Category = a.Category.Name,
                     Department = a.Department.Name,
                     Location = a.Location.Name,
+                    SupplierName = a.Supplier != null ? a.Supplier.Name : "-",
                     DateRegister = a.DateRegister,
-                    IsActive = a.IsActive
+                    IsActive = a.IsActive,
                 })
                 .ToListAsync();
 
@@ -121,6 +123,7 @@ namespace AssetManagementSystem.Web.Services
                 .Include(a => a.Category)    // Include เพิ่ม
                 .Include(a => a.Department)  // Include เพิ่ม
                 .Include(a => a.Location)    // Include เพิ่ม
+                .Include(a => a.Supplier)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
 
@@ -137,6 +140,7 @@ namespace AssetManagementSystem.Web.Services
                 Category = asset.Category.Name,
                 Department = asset.Department.Name,
                 Location = asset.Location.Name,
+                SupplierName = asset.Supplier?.Name,
 
                 Note = asset.Note,
                 DateRegister = asset.DateRegister,
@@ -164,6 +168,7 @@ namespace AssetManagementSystem.Web.Services
                 CategoryId = asset.CategoryId,
                 DepartmentId = asset.DepartmentId,
                 LocationId = asset.LocationId,
+                SupplierId = asset.SupplierId,
 
                 Note = asset.Note,
                 DateRegister = asset.DateRegister,
@@ -191,6 +196,7 @@ namespace AssetManagementSystem.Web.Services
             assetToUpdate.CategoryId = model.CategoryId;
             assetToUpdate.DepartmentId = model.DepartmentId;
             assetToUpdate.LocationId = model.LocationId;
+            assetToUpdate.SupplierId = model.SupplierId;
 
             assetToUpdate.Note = model.Note;
             assetToUpdate.DateRegister = model.DateRegister;

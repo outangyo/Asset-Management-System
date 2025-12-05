@@ -56,7 +56,9 @@
                                 </select>
                                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
                             </div>
+                        </div>
 
+                        <div class="row">
                             <!-- Location -->
                             <div class="mb-3 col-md-4">
                                 <label asp-for="LocationId" class="form-label fw-semibold"></label>
@@ -64,6 +66,15 @@
                                     <option value="">-- Select --</option>
                                 </select>
                                 <span asp-validation-for="LocationId" class="text-danger"></span>
+                            </div>
+
+                            <!-- Supplier -->
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="SupplierId" class="form-label fw-semibold"></label>
+                                <select asp-for="SupplierId" asp-items="Model.Suppliers" class="form-select">
+                                    <option value="">-- Select Supplier (Optional) --</option>
+                                </select>
+                                <span asp-validation-for="SupplierId" class="text-danger"></span>
                             </div>
                         </div>
 

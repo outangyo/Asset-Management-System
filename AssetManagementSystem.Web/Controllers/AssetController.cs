@@ -19,10 +19,11 @@ namespace AssetManagementSystem.Web.Controllers
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Department> _departmentRepo;
         private readonly IRepository<Location> _locationRepo;
+        private readonly IRepository<Supplier> _supplierRepo;
 
         public AssetController(IAssetService assetService, ILogger<AssetController> logger,
             UserManager<ApplicationUser> userManager, IRepository<Category> categoryRepo, IRepository<Department> departmentRepo,
-        IRepository<Location> locationRepo)
+        IRepository<Location> locationRepo, IRepository<Supplier> supplierRepo)
         {
             _assetService = assetService;
             _logger = logger;
@@ -30,6 +31,7 @@ namespace AssetManagementSystem.Web.Controllers
             _categoryRepo = categoryRepo;
             _departmentRepo = departmentRepo;
             _locationRepo = locationRepo;
+            _supplierRepo = supplierRepo;
         }
 
         [HttpGet]
@@ -240,11 +242,13 @@ namespace AssetManagementSystem.Web.Controllers
             var categories = await _categoryRepo.GetAllAsync();
             var departments = await _departmentRepo.GetAllAsync();
             var locations = await _locationRepo.GetAllAsync();
+            var suppliers = await _supplierRepo.GetAllAsync();
 
             // 2. แปลงเป็น SelectListItem ใส่ลงใน ViewModel
             model.Categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
             model.Departments = departments.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name });
             model.Locations = locations.Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name });
+            model.Suppliers = suppliers.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name });
         }
 
         private async Task PopulateDropdowns(AssetEditViewModel model)

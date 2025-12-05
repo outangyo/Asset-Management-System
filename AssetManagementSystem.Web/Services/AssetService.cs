@@ -85,11 +85,12 @@ namespace AssetManagementSystem.Web.Services
                 Code = model.Code,
                 Name = model.Name,
                 Description = model.Description,
-
+                
                 // บันทึกเป็น ID (Guid) แทน String
                 CategoryId = model.CategoryId,     // ต้องแก้ ViewModel เป็น Guid
                 DepartmentId = model.DepartmentId, // ต้องแก้ ViewModel เป็น Guid
                 LocationId = model.LocationId,     // ต้องแก้ ViewModel เป็น Guid
+                SupplierId = model.SupplierId,
 
                 Note = model.Note,
                 DateRegister = model.DateRegister,

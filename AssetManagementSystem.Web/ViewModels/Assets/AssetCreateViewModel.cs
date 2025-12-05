@@ -17,6 +17,12 @@ namespace AssetManagementSystem.Web.ViewModels.Assets
         [StringLength(200)]
         public string? Description { get; set; }
 
+        [Display(Name = "Supplier")]
+        public Guid? SupplierId { get; set; } // ใช้ Guid? (Nullable) เผื่อบาง Asset ไม่มี Supplier
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Suppliers { get; set; } = Enumerable.Empty<SelectListItem>();
+
         // --- 1. Category (เปลี่ยนจาก string เป็น Guid) ---
         [Required(ErrorMessage = "Please select a category")]
         [Display(Name = "Category")]

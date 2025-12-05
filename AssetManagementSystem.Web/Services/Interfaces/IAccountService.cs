@@ -18,5 +18,11 @@ namespace AssetManagementSystem.Web.Services.Interfaces
         Task<ExternalLoginInfo?> GetExternalLoginInfoAsync();
         Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent);
         Task<IdentityResult> CreateExternalUserAsync(ExternalLoginInfo info);
+
+        // Method for editing user profile
+        // ดึงข้อมูลมาโชว์ในฟอร์มแก้ไข
+        Task<UserProfileEditViewModel> GetProfileForEditAsync(string userId);
+        // บันทึกข้อมูลที่แก้ไข
+        Task<IdentityResult> UpdateProfileAsync(string userId, UserProfileEditViewModel model);
     }
 }

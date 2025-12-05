@@ -13,12 +13,54 @@ namespace AssetManagementSystem.Web.Controllers
         private readonly IAccountService _accountService;
         private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(IAccountService accountService, ILogger<AccountController> logger, SignInManager<ApplicationUser> signInManager)
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _accountService = accountService;
             _logger = logger;
             _signInManager = signInManager;
+            _userManager = userManager;
+        }
+
+        // GET: /Account/EditProfile
+        [HttpGet]
+        [Authorize] // บังคับล็อกอิน
+        public async Task<IActionResult> EditProfile()
+        {
+            // ดึง ID ของคนที่กำลังล็อกอินอยู่
+            var userId = _userManager.GetUserId(User);
+
+            var model = await _accountService.GetProfileForEditAsync(userId);
+            if (model == null) return NotFound();
+
+            return View(model);
+        }
+
+        // POST: /Account/EditProfile
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(UserProfileEditViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var userId = _userManager.GetUserId(User);
+            var result = await _accountService.UpdateProfileAsync(userId, model);
+
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Profile updated successfully!";
+                // กลับไปหน้า Profile (หรือหน้าเดิม)
+                return RedirectToAction(nameof(Profile));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(model);
         }
 
         // GET: /Account/Register

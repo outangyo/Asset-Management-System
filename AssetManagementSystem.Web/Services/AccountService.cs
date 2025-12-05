@@ -228,5 +228,42 @@ namespace AssetManagementSystem.Web.Services
 
             return result;
         }
+
+        // For User Profile Edit
+        public async Task<UserProfileEditViewModel> GetProfileForEditAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return null;
+
+            return new UserProfileEditViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth,
+                Username = user.UserName,
+                Email = user.Email
+            };
+        }
+
+        // For User Profile Update
+        public async Task<IdentityResult> UpdateProfileAsync(string userId, UserProfileEditViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "User not found" });
+            }
+
+            // อัปเดตค่าใหม่ลง Entity
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.DateOfBirth = model.DateOfBirth;
+            user.ModifiedOn = DateTime.UtcNow; // (ถ้ามี Audit Column)
+
+            // สั่ง Identity ให้ Update
+            return await _userManager.UpdateAsync(user);
+        }
     }
 }

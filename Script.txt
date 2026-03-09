@@ -8,7 +8,7 @@ docker compose up -d // รัน docker compose ใน background
 docker compose down // หยุด docker compose
 
 // สร้าง SQL server
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=1q2w3e+-12" -p 1433:1433 --name sql_server --hostname sql_server -d mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YOUR_PASSWORD" -p 1433:1433 --name sql_server --hostname sql_server -d mcr.microsoft.com/mssql/server:2022-latest
 
 // stop image หา id โดยใช้คำสั่ง docker ps
 docker container stop 59cf2c1afdcb

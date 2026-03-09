@@ -47,10 +47,10 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db;Database=AssetManagementDB;User Id=sa;Password=PasswordTest123;TrustServerCertificate=True;
       # --- SECRETS ADDED HERE ---
       - EmailSettings__Password=amlbiktzijzeznxe
-      - Authentication__Google__ClientId=876476881383-8efdkemlst1fp6rakcphgcpdhi58mtqg.apps.googleusercontent.com
-      - Authentication__Google__ClientSecret=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
-      - Authentication__Facebook__ClientId=651501364429528
-      - Authentication__Facebook__ClientSecret=df03397b02feea2949b7520e1a8c3a5c
+      - Authentication__Google__ClientId=YOUR_GOOGLE_CLIENT_ID
+      - Authentication__Google__ClientSecret=YOUR_GOOGLE_CLIENT_SECRET
+      - Authentication__Facebook__ClientId=YOUR_FACEBOOK_CLIENT_ID
+      - Authentication__Facebook__ClientSecret=YOUR_FACEBOOK_CLIENT_SECRET
     depends_on:
       migrations:
         condition: service_completed_successfully

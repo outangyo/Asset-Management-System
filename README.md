@@ -1,6 +1,8 @@
-# 🏢 Asset Management System (A.M.S)
+# 🏢 Asset Management System
 
 An enterprise-grade solution for tracking and managing company assets efficiently. This project demonstrates a robust implementation of **ASP.NET Core MVC** with a Focus on advanced security and administrative control.
+
+👉 **[View Project Presentation & Screenshots (PDF)](./AssetManagement_Project_Preview.pdf)**
 
 ## 🚀 Key Features
 
@@ -8,18 +10,16 @@ An enterprise-grade solution for tracking and managing company assets efficientl
 - **Comprehensive Administration System:** - **Roles Management & Users Management:** Full CRUD operations on roles. Supports creating, renaming, and deleting roles, as well as granular permission assignments.
   - **User Management:** Centralized dashboard to manage system users, assign/change roles, and control access levels across the application.
     
-  - **Roles Administration & Access Control:**
-A structural-level security and Role-Based Access Control (RBAC) system.
-Dynamic Role Management: Full CRUD operations for application roles. Seamlessly customize role names, descriptions, and toggle active/inactive statuses.
-User-Role Mapping: An insightful preview interface that instantly displays the total count, names, and emails of users assigned to each specific role.
-Page-Level Authorization: Practical implementation of roles to secure application routing and views. Effectively restricts unauthorized access, such as preventing Guest users from viewing Admin-exclusive sensitive data.
+  - **Roles Administration & Access Control (RBAC):** Manage application roles (CRUD) with status toggles, track assigned users in real-time, and secure application routing with page-level authorization.
+      - Dynamic Roles: Full CRUD operations with Active/Inactive toggles.
+      - User Mapping: Instantly view user counts and details assigned to each role.
+      - Page-Level Security: Secure application routes and views based on roles.
 
-  - **Users Administration & Role Assignment:**
-A comprehensive account management system focusing on user-level authorization.
-Comprehensive User Management: A centralized dashboard for complete user CRUD operations, featuring built-in search, status filtering, and email confirmation tracking.
-Dynamic Role Assignment: An intuitive interface for assigning specific permissions to individual users. Supports multiple role assignments via checkboxes, complete with quick 'Select All' and 'Clear All' functionalities.
-Detailed User Profile: In-depth profile views displaying contact details, account information, and currently assigned roles to ensure system transparency and simplify security audits.
-
+  - **Users Administration & Role Assignment:** A centralized dashboard for user management, featuring intuitive multi-role assignments and detailed user profiles for quick security audits.
+      - User Management: Centralized dashboard with search, filter, and CRUD capabilities.
+      - Role Assignment: Intuitive checkbox interface for assigning multiple roles quickly.
+      - User Profiles: Detailed views for transparent tracking and security audits.
+   
 - **Asset Lifecycle Management:** Complete CRUD operations for assets, suppliers, and departments with an intuitive UI.
 - **Dynamic Dashboard:** Real-time summary cards for quick insights into total assets, suppliers, and system users.
 - **Data Integrity:** Implements **Entity Framework Core** with relational database constraints and automated Data Seeding for a consistent environment.
@@ -43,3 +43,8 @@ The solution follows a clean, multi-layered architecture:
 - **AssetManagementSystem.Db:** The Data Infrastructure Layer for DB Context and Migrations.
 
 ---
+
+## 📝 Important Note for Local Development
+
+- **Database & Data Seeding:** Currently, this project is configured for my local development environment. If cloned and run on a new machine, the database will be created but will initially be empty (as the user mock data resides on my local SQL Server). 
+- **Docker / Containerization:** The project does not yet utilize Docker containers. 
